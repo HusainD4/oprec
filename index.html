@@ -314,28 +314,6 @@
             margin-bottom: 10px;
             color: var(--primary-color);
         }
-
-        .division-card .info-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 18px;
-            color: var(--info-color);
-            background-color: var(--white);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .division-card .info-icon:hover {
-            transform: scale(1.1);
-        }
         
         .error-message {
             color: var(--error-color);
@@ -556,7 +534,6 @@
             max-width: 500px;
             position: relative;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            text-align: left;
         }
         
         .close-modal {
@@ -732,9 +709,9 @@
             
             <form id="registrationForm">
                 <div class="form-group">
-                    <label for="fullName">Nama Lengkap <span class="required">*</span></label>
-                    <input type="text" id="fullName" class="form-control" placeholder="Masukkan nama lengkap Anda" required>
-                    <div class="error-message" id="fullNameError"></div>
+                    <label for="nama">Nama Lengkap <span class="required">*</span></label>
+                    <input type="text" id="nama" class="form-control" placeholder="Masukkan nama lengkap Anda" required>
+                    <div class="error-message" id="namaError"></div>
                 </div>
                 
                 <div class="form-group">
@@ -744,28 +721,42 @@
                 </div>
                 
                 <div class="form-group">
+                    <label for="prodi">Prodi <span class="required">*</span></label>
+                    <input type="text" id="prodi" class="form-control" placeholder="Contoh: S1 Teknik Informatika" required>
+                    <div class="error-message" id="prodiError"></div>
+                </div>
+                
+                <div class="form-group">
                     <label for="email">Email <span class="required">*</span></label>
                     <input type="email" id="email" class="form-control" placeholder="contoh@email.com" required>
                     <div class="error-message" id="emailError"></div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="phoneNumber">No. WhatsApp Aktif <span class="required">*</span></label>
-                    <input type="tel" id="phoneNumber" class="form-control" placeholder="08xxxxxxxxxx" required>
-                    <div class="error-message" id="phoneNumberError"></div>
+                    <label for="noWa">No. WhatsApp Aktif <span class="required">*</span></label>
+                    <input type="tel" id="noWa" class="form-control" placeholder="08xxxxxxxxxx" required>
+                    <div class="error-message" id="noWaError"></div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="reason">Alasan Ikut Open Recruitment Rana <span class="required">*</span></label>
-                    <textarea id="reason" class="form-control" placeholder="Jelaskan mengapa Anda tertarik bergabung dengan Rana9" required></textarea>
-                    <div class="error-message" id="reasonError"></div>
+                    <label for="tanggalLahir">Tanggal Lahir <span class="required">*</span></label>
+                    <input type="date" id="tanggalLahir" class="form-control" required>
+                    <div class="error-message" id="tanggalLahirError"></div>
                 </div>
                 
                 <div class="form-group">
-                    <hr>
-                    <br>
-                    <label>Pilih Divisi yang Diminati <span class="required">*</span></label>
-                    <br>
+                    <label for="alasan">Alasan Ikut Open Recruitment Rana <span class="required">*</span></label>
+                    <textarea id="alasan" class="form-control" placeholder="Jelaskan mengapa Anda tertarik bergabung dengan Rana9" required></textarea>
+                    <div class="error-message" id="alasanError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        Pilih Divisi yang Diminati <span class="required">*</span>
+                        <button type="button" class="btn-info" id="divisionInfoBtn">
+                            <i class="fas fa-info-circle"></i> Lihat Jobdesk
+                        </button>
+                    </label>
                     <div class="division-cards" id="divisionCards">
                         <div class="division-card" data-division="Sekretaris">
                             <i class="fas fa-file-alt"></i>
@@ -800,8 +791,6 @@
                             <p>Divisi Publikasi</p>
                         </div>
                     </div>
-                    <p style="color: red; font-size: 10px; ">* Untuk melihat penjelasan bisa klik divisi yg kalian minati dan tekan tombol info</p>
-
                     <input type="hidden" id="firstDivision" required>
                     <div class="error-message" id="firstDivisionError"></div>
                 </div>
@@ -811,12 +800,9 @@
                     <textarea id="firstDivisionReason" class="form-control" placeholder="Jelaskan mengapa Anda tertarik dengan divisi pilihan pertama Anda" required></textarea>
                     <div class="error-message" id="firstDivisionReasonError"></div>
                 </div>
-                <br>
-                <hr>
-                <br>
+                
                 <div class="form-group">
                     <label>Pilihan Kedua Divisi <span class="required">*</span></label>
-                    <br>
                     <div class="division-cards" id="secondDivisionCards">
                         <div class="division-card" data-division="Sekretaris">
                             <i class="fas fa-file-alt"></i>
@@ -1004,11 +990,13 @@
         
         // DOM Elements for form
         const form = document.getElementById('registrationForm');
-        const fullNameInput = document.getElementById('fullName');
+        const namaInput = document.getElementById('nama');
         const nimInput = document.getElementById('nim');
+        const prodiInput = document.getElementById('prodi');
         const emailInput = document.getElementById('email');
-        const phoneNumberInput = document.getElementById('phoneNumber');
-        const reasonInput = document.getElementById('reason');
+        const noWaInput = document.getElementById('noWa');
+        const tanggalLahirInput = document.getElementById('tanggalLahir');
+        const alasanInput = document.getElementById('alasan');
         const firstDivisionInput = document.getElementById('firstDivision');
         const firstDivisionReasonInput = document.getElementById('firstDivisionReason');
         const secondDivisionInput = document.getElementById('secondDivision');
@@ -1028,11 +1016,13 @@
         
         // Error messages
         const errorMessages = {
-            fullName: document.getElementById('fullNameError'),
+            nama: document.getElementById('namaError'),
             nim: document.getElementById('nimError'),
+            prodi: document.getElementById('prodiError'),
             email: document.getElementById('emailError'),
-            phoneNumber: document.getElementById('phoneNumberError'),
-            reason: document.getElementById('reasonError'),
+            noWa: document.getElementById('noWaError'),
+            tanggalLahir: document.getElementById('tanggalLahirError'),
+            alasan: document.getElementById('alasanError'),
             firstDivision: document.getElementById('firstDivisionError'),
             firstDivisionReason: document.getElementById('firstDivisionReasonError'),
             secondDivision: document.getElementById('secondDivisionError'),
@@ -1052,9 +1042,12 @@
             window.scrollTo(0, 0);
         });
         
-        // Handle division selection with info icon
+        // Handle division info button on form page
+        const divisionInfoBtn = document.getElementById('divisionInfoBtn');
+        
+        // Handle division selection
         divisionCards.forEach(card => {
-            card.addEventListener('click', function(e) {
+            card.addEventListener('click', function() {
                 // Remove all info icons first
                 divisionCards.forEach(c => {
                     const icon = c.querySelector('.info-icon');
@@ -1064,12 +1057,12 @@
                 divisionCards.forEach(c => c.classList.remove('selected'));
                 this.classList.add('selected');
                 
-                // Add info icon to the selected card
+                // Add info icon to selected card
                 const infoIcon = document.createElement('i');
                 infoIcon.className = 'fas fa-info-circle info-icon';
                 this.appendChild(infoIcon);
                 
-                // Add click event to the info icon
+                // Add click event to info icon
                 infoIcon.addEventListener('click', function(event) {
                     event.stopPropagation(); // Prevent card click
                     const divisionName = card.dataset.division;
@@ -1129,11 +1122,11 @@
             });
             
             // Validate full name (must be capitalized)
-            if (fullNameInput.value.trim() === '') {
-                showError('fullName', 'Nama lengkap wajib diisi');
+            if (namaInput.value.trim() === '') {
+                showError('nama', 'Nama lengkap wajib diisi');
                 isValid = false;
-            } else if (fullNameInput.value !== fullNameInput.value.toUpperCase()) {
-                showError('fullName', 'Nama lengkap harus menggunakan huruf kapital');
+            } else if (namaInput.value !== namaInput.value.toUpperCase()) {
+                showError('nama', 'Nama lengkap harus menggunakan huruf kapital');
                 isValid = false;
             }
             
@@ -1143,6 +1136,12 @@
                 isValid = false;
             } else if (!/^\d+$/.test(nimInput.value)) {
                 showError('nim', 'NIM hanya boleh berisi angka');
+                isValid = false;
+            }
+            
+            // Validate prodi
+            if (prodiInput.value.trim() === '') {
+                showError('prodi', 'Prodi wajib diisi');
                 isValid = false;
             }
             
@@ -1156,17 +1155,23 @@
             }
             
             // Validate phone number
-            if (phoneNumberInput.value.trim() === '') {
-                showError('phoneNumber', 'No. WhatsApp wajib diisi');
+            if (noWaInput.value.trim() === '') {
+                showError('noWa', 'No. WhatsApp wajib diisi');
                 isValid = false;
-            } else if (!/^08\d{8,12}$/.test(phoneNumberInput.value)) {
-                showError('phoneNumber', 'Format nomor WhatsApp tidak valid');
+            } else if (!/^08\d{8,12}$/.test(noWaInput.value)) {
+                showError('noWa', 'Format nomor WhatsApp tidak valid');
+                isValid = false;
+            }
+            
+            // Validate date of birth
+            if (tanggalLahirInput.value.trim() === '') {
+                showError('tanggalLahir', 'Tanggal lahir wajib diisi');
                 isValid = false;
             }
             
             // Validate reason
-            if (reasonInput.value.trim() === '') {
-                showError('reason', 'Alasan ikut open recruitment wajib diisi');
+            if (alasanInput.value.trim() === '') {
+                showError('alasan', 'Alasan ikut open recruitment wajib diisi');
                 isValid = false;
             }
             
@@ -1213,11 +1218,13 @@
         // Update progress bar
         function updateProgressBar() {
             const fields = [
-                fullNameInput.value,
+                namaInput.value,
                 nimInput.value,
+                prodiInput.value,
                 emailInput.value,
-                phoneNumberInput.value,
-                reasonInput.value,
+                noWaInput.value,
+                alasanInput.value,
+                tanggalLahirInput.value,
                 firstDivisionInput.value,
                 firstDivisionReasonInput.value,
                 secondDivisionInput.value,
@@ -1236,11 +1243,13 @@
             if (validateForm()) {
                 // Save data to Firebase
                 const formData = {
-                    fullName: fullNameInput.value,
+                    nama: namaInput.value,
                     nim: nimInput.value,
+                    prodi: prodiInput.value,
                     email: emailInput.value,
-                    phoneNumber: phoneNumberInput.value,
-                    reason: reasonInput.value,
+                    noWa: noWaInput.value,
+                    tanggalLahir: tanggalLahirInput.value,
+                    alasan: alasanInput.value,
                     firstDivision: firstDivisionInput.value,
                     firstDivisionReason: firstDivisionReasonInput.value,
                     secondDivision: secondDivisionInput.value,
@@ -1267,9 +1276,9 @@
         });
         
         // Handle input events
-        [fullNameInput, nimInput, emailInput, phoneNumberInput, reasonInput, firstDivisionReasonInput, secondDivisionReasonInput].forEach(input => {
+        [namaInput, nimInput, prodiInput, emailInput, noWaInput, alasanInput, firstDivisionReasonInput, secondDivisionReasonInput, tanggalLahirInput].forEach(input => {
             input.addEventListener('input', function() {
-                if (this.id === 'fullName') {
+                if (this.id === 'nama') {
                     this.value = this.value.toUpperCase();
                 }
                 updateProgressBar();
