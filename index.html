@@ -218,6 +218,13 @@
             background: linear-gradient(to right, var(--accent-color), #f2c94c);
         }
         
+        .btn-info {
+            background: linear-gradient(to right, var(--info-color), #138496);
+            padding: 8px 15px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
         .btn-container {
             display: flex;
             justify-content: space-between;
@@ -483,6 +490,80 @@
             font-weight: bold;
         }
         
+        /* Modal for Division Info */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close-modal:hover {
+            color: var(--text-color);
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modal-header h3 {
+            color: var(--primary-color);
+        }
+        
+        .division-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .division-table th, .division-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .division-table th {
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-weight: 600;
+        }
+        
+        .division-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .division-table tr:hover {
+            background-color: rgba(106, 17, 203, 0.1);
+        }
+        
         @media (max-width: 768px) {
             .form-container, .success-container {
                 padding: 20px;
@@ -496,6 +577,19 @@
             .division-cards {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .division-table {
+                font-size: 14px;
+            }
+            
+            .division-table th, .division-table td {
+                padding: 8px 10px;
+            }
         }
     </style>
 </head>
@@ -507,8 +601,8 @@
                 <h1>Rana9</h1>
             </div>
             <div class="header-info">
-                <p><i class="fas fa-calendar-alt"></i> Open Recruitment 2026</p>
-                <p><i class="fas fa-clock"></i> Deadline: 13 Januari 2026</p>
+                <p><i class="fas fa-calendar-alt"></i> Open Recruitment 2023</p>
+                <p><i class="fas fa-clock"></i> Deadline: 31 Desember 2023</p>
             </div>
         </div>
     </header>
@@ -557,7 +651,11 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Pilih Divisi yang Diminati <span class="required">*</span></label>
+                    <label>Pilih Divisi yang Diminati <span class="required">*</span>
+                        <button type="button" class="btn-info" id="divisionInfoBtn">
+                            <i class="fas fa-info-circle"></i> Penjelasan Divisi
+                        </button>
+                    </label>
                     <div class="division-cards" id="divisionCards">
                         <div class="division-card" data-division="Sekretaris">
                             <i class="fas fa-file-alt"></i>
@@ -680,7 +778,6 @@
                     <a href="https://drive.google.com/drive/folders/1RhRs08Cb_E1oMLZo0idloC9yy2uebIOY?usp=sharing" target="_blank" class="certificate-link">
                         <i class="fab fa-google-drive"></i>
                         <div>
-                            <p>klik di sini</p>
                             <strong>Upload Sertifikat</strong>
                             <p style="font-size: 14px; margin-top: 5px;">Buat folder dengan nama lengkap Anda dan upload sertifikat</p>
                         </div>
@@ -732,12 +829,68 @@
                 <a href="#"><i class="fab fa-linkedin"></i></a>
                 <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
-            <p>&copy; 2023 Rana9. Husain Mulyansyah.</p>
+            <p>&copy; 2023 Rana9. All rights reserved.</p>
         </div>
     </footer>
     
     <!-- Notification -->
     <div class="notification" id="notification"></div>
+    
+    <!-- Modal for Division Info -->
+    <div class="modal" id="divisionModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> Penjelasan Divisi</h3>
+            </div>
+            <table class="division-table">
+                <thead>
+                    <tr>
+                        <th>Divisi</th>
+                        <th>Jobdesk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sekretaris</td>
+                        <td>Bertanggung jawab dalam pengelolaan administrasi dan surat menyurat.</td>
+                    </tr>
+                    <tr>
+                        <td>Bendahara</td>
+                        <td>Mengelola keuangan UKM.</td>
+                    </tr>
+                    <tr>
+                        <td>Dokumentasi</td>
+                        <td>Mengambil foto dan video untuk dokumentasi kegiatan.</td>
+                    </tr>
+                    <tr>
+                        <td>Pendidikan</td>
+                        <td>Mengatur dan melaksanakan kegiatan pelatihan dan pembelajaran.</td>
+                    </tr>
+                    <tr>
+                        <td>KWU</td>
+                        <td>Mengelola kegiatan kewirausahaan dan bisnis di UKM.</td>
+                    </tr>
+                    <tr>
+                        <td>Publikasi</td>
+                        <td>Mengelola media sosial dan publikasi informasi kegiatan UKM.</td>
+                    </tr>
+                    <tr>
+                        <td>Perkap (Koordinator Alat dan Properti)</td>
+                        <td>Mengatur dan memastikan peralatan serta properti tersedia dengan baik.</td>
+                    </tr>
+                    <tr>
+                        <td>Humas Eksternal</td>
+                        <td>Menjalin hubungan dengan pihak luar dan komunitas eksternal.</td>
+                    </tr>
+                    <tr>
+                        <td>Humas Internal</td>
+                        <td>Mengelola hubungan antar anggota UKM dan internal organisasi.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     
     <script>
         // Initialize Firebase
@@ -771,6 +924,11 @@
         const resetBtn = document.getElementById('resetBtn');
         const notification = document.getElementById('notification');
         const formProgress = document.getElementById('formProgress');
+        
+        // Division info modal elements
+        const divisionInfoBtn = document.getElementById('divisionInfoBtn');
+        const divisionModal = document.getElementById('divisionModal');
+        const closeModalBtn = document.getElementById('closeModal');
         
         // Division cards
         const divisionCards = document.querySelectorAll('#divisionCards .division-card');
@@ -995,6 +1153,23 @@
             updateProgressBar();
         });
         
+        // Handle division info button
+        divisionInfoBtn.addEventListener('click', function() {
+            divisionModal.style.display = 'flex';
+        });
+        
+        // Handle modal close
+        closeModalBtn.addEventListener('click', function() {
+            divisionModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === divisionModal) {
+                divisionModal.style.display = 'none';
+            }
+        });
+        
         // Generate QR Code for WhatsApp link
         function generateQRCode() {
             const qrcodeContainer = document.getElementById('qrcode');
@@ -1029,39 +1204,5 @@
         // Initialize progress bar
         updateProgressBar();
     </script>
-    <script>
-  // Disable F12
-  document.addEventListener('keydown', function (e) {
-    if (e.key === "F12") {
-      e.preventDefault();
-      return false;
-    }
-
-    // Disable Ctrl+Shift+I
-    if (e.ctrlKey && e.shiftKey && e.key === "I") {
-      e.preventDefault();
-      return false;
-    }
-
-    // Disable Ctrl+Shift+J
-    if (e.ctrlKey && e.shiftKey && e.key === "J") {
-      e.preventDefault();
-      return false;
-    }
-
-    // Disable Ctrl+Shift+C
-    if (e.ctrlKey && e.shiftKey && e.key === "C") {
-      e.preventDefault();
-      return false;
-    }
-
-    // Disable Ctrl+U (View Source)
-    if (e.ctrlKey && e.key === "u") {
-      e.preventDefault();
-      return false;
-    }
-  });
-</script>
-
 </body>
 </html>

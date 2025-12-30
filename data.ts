@@ -20,3 +20,38 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+
+    <script>
+  // Disable F12
+  document.addEventListener('keydown', function (e) {
+    if (e.key === "F12") {
+      e.preventDefault();
+      return false;
+    }
+
+    // Disable Ctrl+Shift+I
+    if (e.ctrlKey && e.shiftKey && e.key === "I") {
+      e.preventDefault();
+      return false;
+    }
+
+    // Disable Ctrl+Shift+J
+    if (e.ctrlKey && e.shiftKey && e.key === "J") {
+      e.preventDefault();
+      return false;
+    }
+
+    // Disable Ctrl+Shift+C
+    if (e.ctrlKey && e.shiftKey && e.key === "C") {
+      e.preventDefault();
+      return false;
+    }
+
+    // Disable Ctrl+U (View Source)
+    if (e.ctrlKey && e.key === "u") {
+      e.preventDefault();
+      return false;
+    }
+  });
+</script>
