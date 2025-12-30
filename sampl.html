@@ -46,6 +46,184 @@
             color: var(--text-color);
         }
         
+        /* Logo Styles */
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover .logo-img {
+            transform: scale(1.05);
+        }
+        
+        .logo-large {
+            height: 80px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Countdown Timer Styles */
+        .countdown-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 15px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .countdown-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+        
+        .countdown-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .countdown-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .countdown-title i {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .countdown-timer {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 10px 15px;
+            border-radius: 8px;
+            min-width: 70px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .countdown-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .countdown-value {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .countdown-label {
+            font-size: 12px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+        
+        /* Page Closed Styles */
+        .page-closed {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+        
+        .page-closed.active {
+            display: flex;
+        }
+        
+        .closed-container {
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .closed-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+        
+        .closed-logo {
+            margin-bottom: 20px;
+        }
+        
+        .closed-logo img {
+            height: 60px;
+            filter: grayscale(100%);
+            opacity: 0.7;
+        }
+        
+        .closed-icon {
+            font-size: 60px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .closed-title {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .closed-message {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .closed-footer {
+            font-size: 16px;
+            color: #888;
+            font-style: italic;
+        }
+        
         header {
             background-color: rgba(255, 255, 255, 0.95);
             padding: 20px 0;
@@ -64,17 +242,13 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .logo i {
-            font-size: 30px;
-            color: var(--primary-color);
+            gap: 15px;
         }
         
         .logo h1 {
             color: var(--primary-color);
             font-weight: 700;
+            font-size: 28px;
         }
         
         .header-info {
@@ -594,6 +768,27 @@
         }
         
         @media (max-width: 768px) {
+            .logo-img {
+                height: 35px;
+            }
+            
+            .logo h1 {
+                font-size: 24px;
+            }
+            
+            .countdown-item {
+                min-width: 60px;
+                padding: 8px 12px;
+            }
+            
+            .countdown-value {
+                font-size: 20px;
+            }
+            
+            .countdown-label {
+                font-size: 10px;
+            }
+            
             .container {
                 padding: 20px;
             }
@@ -615,345 +810,386 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <i class="fas fa-rocket"></i>
-                <h1>Rana9</h1>
+    <!-- Page Closed Container (Initially Hidden) -->
+    <div class="page-closed" id="pageClosed">
+        <div class="closed-container">
+            <div class="closed-logo">
+                <img src="ranalogo.png" alt="Rana9 Logo" class="logo-img">
             </div>
-            <div class="header-info">
-                <p><i class="fas fa-calendar-alt"></i> Open Recruitment 2026</p>
-                <p><i class="fas fa-clock"></i> Deadline: 13 Januari 2026</p>
-            </div>
+            <i class="fas fa-calendar-times closed-icon"></i>
+            <h2 class="closed-title">Halaman Telah Ditutup</h2>
+            <p class="closed-message">
+                Terima kasih telah berpartisipasi dalam Open Recruitment Rana9 2026.<br>
+                Pendaftaran telah ditutup pada 13 Januari 2026.
+            </p>
+            <p class="closed-footer">
+                © 2026 Rana9. All rights reserved - Developers Husain Mulyansyah.
+            </p>
         </div>
-    </header>
-    
-    <main>
-    <!-- Landing Container -->
-    <div class="landing-container container active" id="landingContainer">
-        <img 
-            src="ranalogo.png" 
-            alt="Logo RANA9" 
-            style="width: 120px; height: auto; margin-bottom: 10px;"
-        >
-        <h2>Selamat Datang di Open Recruitment Rana9 2026</h2>
-        <p>
-            Bergabunglah bersama kami untuk menciptakan perubahan positif dan 
-            kembangkan potensi Anda dalam lingkungan yang dinamis dan mendukung.
-        </p>
-        <button class="cta-button" id="showDivisionBtn">
-            <i class="fas fa-arrow-right"></i> Daftar Sekarang
-        </button>
     </div>
-
-        
-        <!-- Division Info Container -->
-        <div class="division-info-container container" id="divisionInfoContainer">
-            <h2><i class="fas fa-info-circle"></i> Penjelasan Divisi</h2>
-            <p>Berikut adalah divisi yang tersedia beserta jobdesk masing-masing. Pilih divisi yang sesuai dengan minat dan bakat Anda.</p>
-            
-            <table class="division-table">
-                <thead>
-                    <tr>
-                        <th>Divisi</th>
-                        <th>Jobdesk</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Sekretaris</td>
-                        <td>Bertanggung jawab dalam pengelolaan administrasi dan surat menyurat.</td>
-                    </tr>
-                    <tr>
-                        <td>Bendahara</td>
-                        <td>Mengelola keuangan UKM.</td>
-                    </tr>
-                    <tr>
-                        <td>Dokumentasi</td>
-                        <td>Mengambil foto dan video untuk dokumentasi kegiatan.</td>
-                    </tr>
-                    <tr>
-                        <td>Pendidikan</td>
-                        <td>Mengatur dan melaksanakan kegiatan pelatihan dan pembelajaran.</td>
-                    </tr>
-                    <tr>
-                        <td>KWU</td>
-                        <td>Mengelola kegiatan kewirausahaan dan bisnis di UKM.</td>
-                    </tr>
-                    <tr>
-                        <td>Publikasi</td>
-                        <td>Mengelola media sosial dan publikasi informasi kegiatan UKM.</td>
-                    </tr>
-                    <tr>
-                        <td>Perkap (Koordinator Alat dan Properti)</td>
-                        <td>Mengatur dan memastikan peralatan serta properti tersedia dengan baik.</td>
-                    </tr>
-                    <tr>
-                        <td>Humas Eksternal</td>
-                        <td>Menjalin hubungan dengan pihak luar dan komunitas eksternal.</td>
-                    </tr>
-                    <tr>
-                        <td>Humas Internal</td>
-                        <td>Mengelola hubungan antar anggota UKM dan internal organisasi.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <button class="cta-button" id="showFormBtn">
-                <i class="fas fa-arrow-right"></i> Lanjut ke Form Pendaftaran
-            </button>
+    
+    <!-- Main Content (Initially Visible) -->
+    <div id="mainContent">
+        <!-- Countdown Timer -->
+        <div class="countdown-container">
+            <div class="countdown-wrapper">
+                <div class="countdown-title">
+                    <i class="fas fa-clock"></i>
+                    <span>Waktu Tersisa Hingga Deadline Pendaftaran</span>
+                </div>
+                <div class="countdown-timer" id="countdown">
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="days">00</span>
+                        <span class="countdown-label">Hari</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="hours">00</span>
+                        <span class="countdown-label">Jam</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="minutes">00</span>
+                        <span class="countdown-label">Menit</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="seconds">00</span>
+                        <span class="countdown-label">Detik</span>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <!-- Form Container -->
-        <div class="form-container container" id="formContainer">
-            <div class="progress-bar">
-                <div class="progress" id="formProgress"></div>
+        <header>
+            <div class="header-container">
+                <div class="logo">
+                    <img src="ranalogo.png" alt="Rana9 Logo" class="logo-img">
+                    <h1>Rana9</h1>
+                </div>
+                <div class="header-info">
+                    <p><i class="fas fa-calendar-alt"></i> Open Recruitment 2026</p>
+                    <p><i class="fas fa-clock"></i> Deadline: 13 Januari 2026</p>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <!-- Landing Container -->
+            <div class="landing-container container active" id="landingContainer">
+                <img src="ranalogo.png" alt="Rana9 Logo" class="logo-large">
+                <h2>Selamat Datang di Open Recruitment Rana9 2026</h2>
+                <p>Bergabunglah bersama kami untuk menciptakan perubahan positif dan kembangkan potensi Anda dalam lingkungan yang dinamis dan mendukung.</p>
+                <button class="cta-button" id="showDivisionBtn">
+                    <i class="fas fa-arrow-right"></i> Daftar Sekarang
+                </button>
             </div>
             
-            <div class="form-header">
-                <h2>Form Pendaftaran Rana9</h2>
-                <p>Bergabunglah bersama kami untuk menciptakan perubahan positif!</p>
+            <!-- Division Info Container -->
+            <div class="division-info-container container" id="divisionInfoContainer">
+                <h2><i class="fas fa-info-circle"></i> Penjelasan Divisi</h2>
+                <p>Berikut adalah divisi yang tersedia beserta jobdesk masing-masing. Pilih divisi yang sesuai dengan minat dan bakat Anda.</p>
+                
+                <table class="division-table">
+                    <thead>
+                        <tr>
+                            <th>Divisi</th>
+                            <th>Jobdesk</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sekretaris</td>
+                            <td>Bertanggung jawab dalam pengelolaan administrasi dan surat menyurat.</td>
+                        </tr>
+                        <tr>
+                            <td>Bendahara</td>
+                            <td>Mengelola keuangan UKM.</td>
+                        </tr>
+                        <tr>
+                            <td>Dokumentasi</td>
+                            <td>Mengambil foto dan video untuk dokumentasi kegiatan.</td>
+                        </tr>
+                        <tr>
+                            <td>Pendidikan</td>
+                            <td>Mengatur dan melaksanakan kegiatan pelatihan dan pembelajaran.</td>
+                        </tr>
+                        <tr>
+                            <td>KWU</td>
+                            <td>Mengelola kegiatan kewirausahaan dan bisnis di UKM.</td>
+                        </tr>
+                        <tr>
+                            <td>Publikasi</td>
+                            <td>Mengelola media sosial dan publikasi informasi kegiatan UKM.</td>
+                        </tr>
+                        <tr>
+                            <td>Perkap (Koordinator Alat dan Properti)</td>
+                            <td>Mengatur dan memastikan peralatan serta properti tersedia dengan baik.</td>
+                        </tr>
+                        <tr>
+                            <td>Humas Eksternal</td>
+                            <td>Menjalin hubungan dengan pihak luar dan komunitas eksternal.</td>
+                        </tr>
+                        <tr>
+                            <td>Humas Internal</td>
+                            <td>Mengelola hubungan antar anggota UKM dan internal organisasi.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="cta-button" id="showFormBtn">
+                    <i class="fas fa-arrow-right"></i> Lanjut ke Form Pendaftaran
+                </button>
             </div>
             
-            <form id="registrationForm">
-                <div class="form-group">
-                    <label for="nama">Nama Lengkap <span class="required">*</span></label>
-                    <input type="text" id="nama" class="form-control" placeholder="Masukkan nama lengkap Anda" required>
-                    <div class="error-message" id="namaError"></div>
+            <!-- Form Container -->
+            <div class="form-container container" id="formContainer">
+                <div class="progress-bar">
+                    <div class="progress" id="formProgress"></div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="nim">NIM <span class="required">*</span></label>
-                    <input type="text" id="nim" class="form-control" placeholder="Masukkan NIM Anda (hanya angka)" required>
-                    <div class="error-message" id="nimError"></div>
+                <div class="form-header">
+                    <h2>Form Pendaftaran Rana9</h2>
+                    <p>Bergabunglah bersama kami untuk menciptakan perubahan positif!</p>
                 </div>
                 
-                <div class="form-group">
-                    <label for="prodi">Prodi <span class="required">*</span></label>
-                    <input type="text" id="prodi" class="form-control" placeholder="Contoh: S1 Teknik Informatika" required>
-                    <div class="error-message" id="prodiError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email <span class="required">*</span></label>
-                    <input type="email" id="email" class="form-control" placeholder="contoh@email.com" required>
-                    <div class="error-message" id="emailError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="noWa">No. WhatsApp Aktif <span class="required">*</span></label>
-                    <input type="tel" id="noWa" class="form-control" placeholder="08xxxxxxxxxx" required>
-                    <div class="error-message" id="noWaError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="tanggalLahir">Tanggal Lahir <span class="required">*</span></label>
-                    <input type="date" id="tanggalLahir" class="form-control" required>
-                    <div class="error-message" id="tanggalLahirError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="alasan">Alasan Ikut Open Recruitment Rana <span class="required">*</span></label>
-                    <textarea id="alasan" class="form-control" placeholder="Jelaskan mengapa Anda tertarik bergabung dengan Rana9" required></textarea>
-                    <div class="error-message" id="alasanError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label>
-                        Pilih Divisi yang Diminati <span class="required">*</span>
-                        <button type="button" class="btn-info" id="divisionInfoBtn">
-                            <i class="fas fa-info-circle"></i> Lihat Jobdesk
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="nama">Nama Lengkap <span class="required">*</span></label>
+                        <input type="text" id="nama" class="form-control" placeholder="Masukkan nama lengkap Anda" required>
+                        <div class="error-message" id="namaError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nim">NIM <span class="required">*</span></label>
+                        <input type="text" id="nim" class="form-control" placeholder="Masukkan NIM Anda (hanya angka)" required>
+                        <div class="error-message" id="nimError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="prodi">Prodi <span class="required">*</span></label>
+                        <input type="text" id="prodi" class="form-control" placeholder="Contoh: S1 Teknik Informatika" required>
+                        <div class="error-message" id="prodiError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" class="form-control" placeholder="contoh@email.com" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="noWa">No. WhatsApp Aktif <span class="required">*</span></label>
+                        <input type="tel" id="noWa" class="form-control" placeholder="08xxxxxxxxxx" required>
+                        <div class="error-message" id="noWaError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tanggalLahir">Tanggal Lahir <span class="required">*</span></label>
+                        <input type="date" id="tanggalLahir" class="form-control" required>
+                        <div class="error-message" id="tanggalLahirError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="alasan">Alasan Ikut Open Recruitment Rana <span class="required">*</span></label>
+                        <textarea id="alasan" class="form-control" placeholder="Jelaskan mengapa Anda tertarik bergabung dengan Rana9" required></textarea>
+                        <div class="error-message" id="alasanError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            Pilih Divisi yang Diminati <span class="required">*</span>
+                            <button type="button" class="btn-info" id="divisionInfoBtn">
+                                <i class="fas fa-info-circle"></i> Lihat Jobdesk
+                            </button>
+                        </label>
+                        <div class="division-cards" id="divisionCards">
+                            <div class="division-card" data-division="Sekretaris">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Sekretaris</p>
+                            </div>
+                            <div class="division-card" data-division="Bendahara">
+                                <i class="fas fa-coins"></i>
+                                <p>Bendahara</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Pendidikan">
+                                <i class="fas fa-graduation-cap"></i>
+                                <p>Divisi Pendidikan</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Kewirausahaan">
+                                <i class="fas fa-briefcase"></i>
+                                <p>Divisi Kewirausahaan</p>
+                            </div>
+                            <div class="division-card" data-division="Humas (Internal & Eksternal)">
+                                <i class="fas fa-comments"></i>
+                                <p>Humas</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Perkap">
+                                <i class="fas fa-tools"></i>
+                                <p>Divisi Perkap</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Dokumentasi">
+                                <i class="fas fa-camera"></i>
+                                <p>Divisi Dokumentasi</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Publikasi">
+                                <i class="fas fa-bullhorn"></i>
+                                <p>Divisi Publikasi</p>
+                            </div>
+                        </div>
+                        <input type="hidden" id="firstDivision" required>
+                        <div class="error-message" id="firstDivisionError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="firstDivisionReason">Alasan Memilih Divisi Tersebut <span class="required">*</span></label>
+                        <textarea id="firstDivisionReason" class="form-control" placeholder="Jelaskan mengapa Anda tertarik dengan divisi pilihan pertama Anda" required></textarea>
+                        <div class="error-message" id="firstDivisionReasonError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Pilihan Kedua Divisi <span class="required">*</span></label>
+                        <div class="division-cards" id="secondDivisionCards">
+                            <div class="division-card" data-division="Sekretaris">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Sekretaris</p>
+                            </div>
+                            <div class="division-card" data-division="Bendahara">
+                                <i class="fas fa-coins"></i>
+                                <p>Bendahara</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Pendidikan">
+                                <i class="fas fa-graduation-cap"></i>
+                                <p>Divisi Pendidikan</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Kewirausahaan">
+                                <i class="fas fa-briefcase"></i>
+                                <p>Divisi Kewirausahaan</p>
+                            </div>
+                            <div class="division-card" data-division="Humas (Internal & Eksternal)">
+                                <i class="fas fa-comments"></i>
+                                <p>Humas</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Perkap">
+                                <i class="fas fa-tools"></i>
+                                <p>Divisi Perkap</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Dokumentasi">
+                                <i class="fas fa-camera"></i>
+                                <p>Divisi Dokumentasi</p>
+                            </div>
+                            <div class="division-card" data-division="Divisi Publikasi">
+                                <i class="fas fa-bullhorn"></i>
+                                <p>Divisi Publikasi</p>
+                            </div>
+                        </div>
+                        <input type="hidden" id="secondDivision" required>
+                        <div class="error-message" id="secondDivisionError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="secondDivisionReason">Alasan Memilih Pilihan Kedua <span class="required">*</span></label>
+                        <textarea id="secondDivisionReason" class="form-control" placeholder="Jelaskan mengapa Anda tertarik dengan divisi pilihan kedua Anda" required></textarea>
+                        <div class="error-message" id="secondDivisionReasonError"></div>
+                    </div>
+                    
+                    <div class="btn-container">
+                        <button type="button" class="btn" id="resetBtn">
+                            <i class="fas fa-redo"></i> Reset Form
                         </button>
-                    </label>
-                    <div class="division-cards" id="divisionCards">
-                        <div class="division-card" data-division="Sekretaris">
-                            <i class="fas fa-file-alt"></i>
-                            <p>Sekretaris</p>
-                        </div>
-                        <div class="division-card" data-division="Bendahara">
-                            <i class="fas fa-coins"></i>
-                            <p>Bendahara</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Pendidikan">
-                            <i class="fas fa-graduation-cap"></i>
-                            <p>Divisi Pendidikan</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Kewirausahaan">
-                            <i class="fas fa-briefcase"></i>
-                            <p>Divisi Kewirausahaan</p>
-                        </div>
-                        <div class="division-card" data-division="Humas (Internal & Eksternal)">
-                            <i class="fas fa-comments"></i>
-                            <p>Humas</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Perkap">
-                            <i class="fas fa-tools"></i>
-                            <p>Divisi Perkap</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Dokumentasi">
-                            <i class="fas fa-camera"></i>
-                            <p>Divisi Dokumentasi</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Publikasi">
-                            <i class="fas fa-bullhorn"></i>
-                            <p>Divisi Publikasi</p>
-                        </div>
+                        <button type="submit" class="btn">
+                            <i class="fas fa-paper-plane"></i> Kirim Pendaftaran
+                        </button>
                     </div>
-                    <input type="hidden" id="firstDivision" required>
-                    <div class="error-message" id="firstDivisionError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="firstDivisionReason">Alasan Memilih Divisi Tersebut <span class="required">*</span></label>
-                    <textarea id="firstDivisionReason" class="form-control" placeholder="Jelaskan mengapa Anda tertarik dengan divisi pilihan pertama Anda" required></textarea>
-                    <div class="error-message" id="firstDivisionReasonError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Pilihan Kedua Divisi <span class="required">*</span></label>
-                    <div class="division-cards" id="secondDivisionCards">
-                        <div class="division-card" data-division="Sekretaris">
-                            <i class="fas fa-file-alt"></i>
-                            <p>Sekretaris</p>
-                        </div>
-                        <div class="division-card" data-division="Bendahara">
-                            <i class="fas fa-coins"></i>
-                            <p>Bendahara</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Pendidikan">
-                            <i class="fas fa-graduation-cap"></i>
-                            <p>Divisi Pendidikan</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Kewirausahaan">
-                            <i class="fas fa-briefcase"></i>
-                            <p>Divisi Kewirausahaan</p>
-                        </div>
-                        <div class="division-card" data-division="Humas (Internal & Eksternal)">
-                            <i class="fas fa-comments"></i>
-                            <p>Humas</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Perkap">
-                            <i class="fas fa-tools"></i>
-                            <p>Divisi Perkap</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Dokumentasi">
-                            <i class="fas fa-camera"></i>
-                            <p>Divisi Dokumentasi</p>
-                        </div>
-                        <div class="division-card" data-division="Divisi Publikasi">
-                            <i class="fas fa-bullhorn"></i>
-                            <p>Divisi Publikasi</p>
-                        </div>
-                    </div>
-                    <input type="hidden" id="secondDivision" required>
-                    <div class="error-message" id="secondDivisionError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="secondDivisionReason">Alasan Memilih Pilihan Kedua <span class="required">*</span></label>
-                    <textarea id="secondDivisionReason" class="form-control" placeholder="Jelaskan mengapa Anda tertarik dengan divisi pilihan kedua Anda" required></textarea>
-                    <div class="error-message" id="secondDivisionReasonError"></div>
-                </div>
-                
-                <div class="btn-container">
-                    <button type="button" class="btn" id="resetBtn">
-                        <i class="fas fa-redo"></i> Reset Form
-                    </button>
-                    <button type="submit" class="btn">
-                        <i class="fas fa-paper-plane"></i> Kirim Pendaftaran
-                    </button>
-                </div>
-            </form>
-        </div>
-        
-        <!-- Success Container -->
-        <div class="success-container container" id="successContainer">
-            <div class="success-header">
-                <i class="fas fa-check-circle success-icon"></i>
-                <h2>Pendaftaran Berhasil!</h2>
-                <p>Terima kasih telah mendaftar di Open Recruitment Rana9 2026</p>
+                </form>
             </div>
             
-            <div class="success-content">
-                <p style="font-size: 18px; margin-bottom: 20px;">
-                    <strong>Selamat! Pendaftaran Anda telah kami terima.</strong> Semoga Anda beruntung dalam proses seleksi ini.
-                </p>
+            <!-- Success Container -->
+            <div class="success-container container" id="successContainer">
+                <div class="success-header">
+                    <i class="fas fa-check-circle success-icon"></i>
+                    <h2>Pendaftaran Berhasil!</h2>
+                    <p>Terima kasih telah mendaftar di Open Recruitment Rana9 2026</p>
+                </div>
                 
-                <!-- Certificate Section (Moved to top) -->
-                <div class="certificate-section">
-                    <h3><i class="fas fa-certificate"></i> Upload Sertifikat (Opsional)</h3>
-                    <p>Jika Anda memiliki sertifikat yang relevan, silakan upload melalui link berikut:</p>
+                <div class="success-content">
+                    <p style="font-size: 18px; margin-bottom: 20px;">
+                        <strong>Selamat! Pendaftaran Anda telah kami terima.</strong> Semoga Anda beruntung dalam proses seleksi ini.
+                    </p>
                     
-                    <a href="https://drive.google.com/drive/folders/1RhRs08Cb_E1oMLZo0idloC9yy2uebIOY?usp=sharing" target="_blank" class="certificate-link">
-                        <i class="fab fa-google-drive"></i>
-                        <div>
-                            <strong>Upload Sertifikat</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">Buat folder dengan nama lengkap Anda dan upload sertifikat</p>
-                        </div>
-                    </a>
+                    <!-- Certificate Section (Moved to top) -->
+                    <div class="certificate-section">
+                        <h3><i class="fas fa-certificate"></i> Upload Sertifikat (Opsional)</h3>
+                        <p>Jika Anda memiliki sertifikat yang relevan, silakan upload melalui link berikut:</p>
+                        
+                        <a href="https://drive.google.com/drive/folders/1RhRs08Cb_E1oMLZo0idloC9yy2uebIOY?usp=sharing" target="_blank" class="certificate-link">
+                            <i class="fab fa-google-drive"></i>
+                            <div>
+                                <strong>Upload Sertifikat</strong>
+                                <p style="font-size: 14px; margin-top: 5px;">Buat folder dengan nama lengkap Anda dan upload sertifikat</p>
+                            </div>
+                        </a>
 
-                    <!-- Certificate Bonus Info -->
-                    <div class="certificate-bonus-info">
-                        <h4><i class="fas fa-info-circle"></i> Informasi Poin Tambahan</h4>
-                        <p>Upload sertifikat dapat memberikan Anda <strong>nilai tambah (poin plus)</strong> pada proses seleksi, terutama untuk divisi berikut:</p>
-                        <ul>
-                            <li><strong>Divisi Dokumentasi:</strong> Semua jenis sertifikat (misalnya, fotografi, videografi, desain grafis, dll.) akan memberikan nilai tambah.</li>
-                            <li><strong>Divisi Bendahara & Sekretaris:</strong> Sertifikat dari kegiatan <strong>organisasi, kepemimpinan, atau pelatihan manajemen</strong> akan memberikan nilai tambah.</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- WhatsApp Info (Moved to bottom) -->
-                <div class="whatsapp-info">
-                    <h3><i class="fab fa-whatsapp"></i> Grup Informasi Rana9</h3>
-                    <p>Informasi lebih lanjut mengenai tahapan seleksi akan diinformasikan melalui grup WhatsApp berikut:</p>
-                    
-                    <a href="https://chat.whatsapp.com/IX67r4jqFz15xgvC0ABElZ?mode=wwt" target="_blank" class="whatsapp-link">
-                        <i class="fab fa-whatsapp"></i>
-                        <div>
-                            <strong>Bergabung ke Grup WhatsApp</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">Klik untuk bergabung dengan grup WhatsApp</p>
+                        <!-- Certificate Bonus Info -->
+                        <div class="certificate-bonus-info">
+                            <h4><i class="fas fa-info-circle"></i> Informasi Poin Tambahan</h4>
+                            <p>Upload sertifikat dapat memberikan Anda <strong>nilai tambah (poin plus)</strong> pada proses seleksi, terutama untuk divisi berikut:</p>
+                            <ul>
+                                <li><strong>Divisi Dokumentasi:</strong> Semua jenis sertifikat (misalnya, fotografi, videografi, desain grafis, dll.) akan memberikan nilai tambah.</li>
+                                <li><strong>Divisi Bendahara & Sekretaris:</strong> Sertifikat dari kegiatan <strong>organisasi, kepemimpinan, atau pelatihan manajemen</strong> akan memberikan nilai tambah.</li>
+                            </ul>
                         </div>
-                    </a>
+                    </div>
                     
-                    <p style="margin-bottom: 15px;">Atau scan barcode berikut:</p>
+                    <!-- WhatsApp Info (Moved to bottom) -->
+                    <div class="whatsapp-info">
+                        <h3><i class="fab fa-whatsapp"></i> Grup Informasi Rana9</h3>
+                        <p>Informasi lebih lanjut mengenai tahapan seleksi akan diinformasikan melalui grup WhatsApp berikut:</p>
+                        
+                        <a href="https://chat.whatsapp.com/IX67r4jqFz15xgvC0ABElZ?mode=wwt" target="_blank" class="whatsapp-link">
+                            <i class="fab fa-whatsapp"></i>
+                            <div>
+                                <strong>Bergabung ke Grup WhatsApp</strong>
+                                <p style="font-size: 14px; margin-top: 5px;">Klik untuk bergabung dengan grup WhatsApp</p>
+                            </div>
+                        </a>
+                        
+                        <p style="margin-bottom: 15px;">Atau scan barcode berikut:</p>
+                        
+                        <div class="qr-container">
+                            <div id="qrcode" class="qr-code"></div>
+                        </div>
+                    </div>
                     
-                    <div class="qr-container">
-                        <div id="qrcode" class="qr-code"></div>
+                    <div style="margin-top: 30px;">
+                        <p style="font-style: italic;">Terima kasih atas partisipasi Anda. Kami menantikan kontribusi Anda dalam Rana9!</p>
                     </div>
                 </div>
-                
-                <div style="margin-top: 30px;">
-                    <p style="font-style: italic;">Terima kasih atas partisipasi Anda. Kami menantikan kontribusi Anda dalam Rana9!</p>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="footer-container">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
                 </div>
+                <p>&copy; 2026 Rana9. All rights reserved - Developers Husain Mulyansyah.</p>
             </div>
-        </div>
-    </main>
-    
-    <footer>
-        <div class="footer-container">
-            <div class="social-links">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-            <p>&copy; 2026 Rana9. All rights reserved - Developers Husain Mulyansyah.</p>
-        </div>
-    </footer>
-    
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
-    
-    <!-- Modal for Selected Division Info -->
-    <div class="modal" id="selectedDivisionModal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeSelectedModal">&times;</span>
-            <div class="modal-header">
-                <h3>Jobdesk Divisi</h3>
-            </div>
-            <div class="modal-body">
-                <p id="selectedDivisionDescription"></p>
+        </footer>
+        
+        <!-- Notification -->
+        <div class="notification" id="notification"></div>
+        
+        <!-- Modal for Selected Division Info -->
+        <div class="modal" id="selectedDivisionModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeSelectedModal">&times;</span>
+                <div class="modal-header">
+                    <h3>Jobdesk Divisi</h3>
+                </div>
+                <div class="modal-body">
+                    <p id="selectedDivisionDescription"></p>
+                </div>
             </div>
         </div>
     </div>
@@ -991,6 +1227,8 @@
         const divisionInfoContainer = document.getElementById('divisionInfoContainer');
         const formContainer = document.getElementById('formContainer');
         const successContainer = document.getElementById('successContainer');
+        const mainContent = document.getElementById('mainContent');
+        const pageClosed = document.getElementById('pageClosed');
         
         // DOM Elements for navigation
         const showDivisionBtn = document.getElementById('showDivisionBtn');
@@ -1036,6 +1274,50 @@
             secondDivision: document.getElementById('secondDivisionError'),
             secondDivisionReason: document.getElementById('secondDivisionReasonError')
         };
+        
+        // Countdown Timer Functionality
+        function initCountdown() {
+            // Set the deadline date (January 13, 2026)
+            const deadlineDate = new Date("January 13, 2026 23:59:59").getTime();
+            
+            // Update the countdown every 1 second
+            const countdownInterval = setInterval(function() {
+                // Get today's date and time
+                const now = new Date().getTime();
+                
+                // Find the distance between now and the countdown date
+                const distance = deadlineDate - now;
+                
+                // If the countdown is finished, display the closed page
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    mainContent.style.display = 'none';
+                    pageClosed.classList.add('active');
+                    return;
+                }
+                
+                // Time calculations for days, hours, minutes and seconds
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Display the result in the elements
+                document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+                document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+                document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+                document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+                
+                // Add warning class if less than 3 days
+                if (days < 3) {
+                    document.querySelector('.countdown-container').style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                    document.querySelector('.countdown-title').style.color = 'var(--error-color)';
+                }
+            }, 1000);
+        }
+        
+        // Initialize countdown on page load
+        initCountdown();
         
         // Navigation between containers
         showDivisionBtn.addEventListener('click', function() {
