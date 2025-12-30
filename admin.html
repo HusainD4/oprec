@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Rana9</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --white: #ffffff;
+            --text-color: #333;
+            --light-bg: #f4f7f6;
+            --border-color: #ddd;
+            --success-color: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background-color: #e74c3c; /* Red color for logout */
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        .actions-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .total-pendaftar {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .total-pendaftar span {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .download-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-select {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            background-color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .download-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+        }
+
+        .download-btn {
+            padding: 12px 25px;
+            background: linear-gradient(to right, var(--success-color), #27ae60);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .table-container {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        thead th {
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: #777;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-rocket"></i>
+            <span>Dashboard Admin Rana9</span>
+        </div>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </header>
+
+    <main>
+        <div class="actions-container">
+            <div class="total-pendaftar">
+                Total Pendaftar: <span id="totalCount">0</span>
+            </div>
+            <div class="download-section">
+                <select id="downloadOption" class="download-select">
+                    <option value="all">Semua Data</option>
+                    <option value="phone">Hanya No. WhatsApp</option>
+                    <option value="email">Hanya Email</option>
+                    <option value="phone_email">No. WhatsApp & Email</option>
+                </select>
+                <button class="download-btn" id="downloadBtn">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Nama Lengkap</th>
+                        <th>NIM</th>
+                        <th>Email</th>
+                        <th>No. WhatsApp</th>
+                        <th>Alasan Ikut</th>
+                        <th>Divisi 1</th>
+                        <th>Alasan Divisi 1</th>
+                        <th>Divisi 2</th>
+                        <th>Alasan Divisi 2</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="10" class="loading">
+                            <i class="fas fa-spinner fa-spin"></i> Memuat data...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // CEK AUTENTIKASI
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+                return; // Hentikan eksekusi script jika tidak login
+            }
+
+            // Inisialisasi Firebase (gunakan config yang sama dengan form pendaftaran)
+            const firebaseConfig = {
+                apiKey: "AIzaSyC2yQsDR6J3dzkdTJAZDtA6BKTiKvqqhSI",
+                authDomain: "myapp-c1981.firebaseapp.com",
+                databaseURL: "https://myapp-c1981-default-rtdb.firebaseio.com",
+                projectId: "myapp-c1981",
+                storageBucket: "myapp-c1981.firebasestorage.app",
+                messagingSenderId: "721330953305",
+                appId: "1:721330953305:web:26d329ff6ad1611918a548",
+                measurementId: "G-7BW3KJLJ66"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
+
+            const tableBody = document.getElementById('tableBody');
+            const totalCount = document.getElementById('totalCount');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const downloadOption = document.getElementById('downloadOption');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            let allRegistrations = []; // Variabel untuk menyimpan semua data
+
+            // Fungsi untuk menampilkan data ke tabel
+            function displayData(data) {
+                tableBody.innerHTML = ''; // Kosongkan tabel
+                if (data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="10" class="no-data">Tidak ada data pendaftar.</td></tr>';
+                    totalCount.textContent = '0';
+                    return;
+                }
+
+                data.forEach(reg => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${new Date(reg.timestamp).toLocaleString('id-ID')}</td>
+                        <td>${reg.fullName}</td>
+                        <td>${reg.nim}</td>
+                        <td>${reg.email}</td>
+                        <td>${reg.phoneNumber}</td>
+                        <td>${reg.reason.replace(/\n/g, '<br>')}</td>
+                        <td>${reg.firstDivision}</td>
+                        <td>${reg.firstDivisionReason.replace(/\n/g, '<br>')}</td>
+                        <td>${reg.secondDivision}</td>
+                        <td>${reg.secondDivisionReason.replace(/\n/g, '<br>')}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+                totalCount.textContent = data.length;
+            }
+
+            // Ambil data dari Firebase
+            database.ref('registrations').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    allRegistrations = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+                    displayData(allRegistrations);
+                } else {
+                    allRegistrations = [];
+                    displayData([]);
+                }
+            });
+
+            // Fungsi untuk membuat dan mengunduh file CSV
+            function downloadCSV(csvContent, filename) {
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            // Fungsi untuk escape karakter koma dalam CSV
+            function escapeCsvField(field) {
+                return `"${String(field).replace(/"/g, '""')}"`;
+            }
+
+            // Event Listener untuk tombol Download
+            downloadBtn.addEventListener('click', function() {
+                if (allRegistrations.length === 0) {
+                    alert('Tidak ada data untuk diunduh.');
+                    return;
+                }
+
+                const option = downloadOption.value;
+                let csvContent = '';
+                let filename = '';
+
+                switch (option) {
+                    case 'all':
+                        const headersAll = ['Timestamp', 'Nama Lengkap', 'NIM', 'Email', 'No. WhatsApp', 'Alasan Ikut', 'Divisi 1', 'Alasan Divisi 1', 'Divisi 2', 'Alasan Divisi 2'];
+                        csvContent = [
+                            headersAll.join(','),
+                            ...allRegistrations.map(reg => [
+                                escapeCsvField(new Date(reg.timestamp).toLocaleString('id-ID')),
+                                escapeCsvField(reg.fullName),
+                                escapeCsvField(reg.nim),
+                                escapeCsvField(reg.email),
+                                escapeCsvField(reg.phoneNumber),
+                                escapeCsvField(reg.reason),
+                                escapeCsvField(reg.firstDivision),
+                                escapeCsvField(reg.firstDivisionReason),
+                                escapeCsvField(reg.secondDivision),
+                                escapeCsvField(reg.secondDivisionReason)
+                            ].join(','))
+                        ].join('\n');
+                        filename = `Rana9_SemuaData_${new Date().toISOString().slice(0,10)}.csv`;
+                        break;
+
+                    case 'phone':
+                        const headersPhone = ['Nama Lengkap', 'No. WhatsApp'];
+                        csvContent = [
+                            headersPhone.join(','),
+                            ...allRegistrations.map(reg => [
+                                escapeCsvField(reg.fullName),
+                                escapeCsvField(reg.phoneNumber)
+                            ].join(','))
+                        ].join('\n');
+                        filename = `Rana9_NoWA_${new Date().toISOString().slice(0,10)}.csv`;
+                        break;
+
+                    case 'email':
+                        const headersEmail = ['Nama Lengkap', 'Email'];
+                        csvContent = [
+                            headersEmail.join(','),
+                            ...allRegistrations.map(reg => [
+                                escapeCsvField(reg.fullName),
+                                escapeCsvField(reg.email)
+                            ].join(','))
+                        ].join('\n');
+                        filename = `Rana9_Email_${new Date().toISOString().slice(0,10)}.csv`;
+                        break;
+
+                    case 'phone_email':
+                        const headersBoth = ['Nama Lengkap', 'Email', 'No. WhatsApp'];
+                        csvContent = [
+                            headersBoth.join(','),
+                            ...allRegistrations.map(reg => [
+                                escapeCsvField(reg.fullName),
+                                escapeCsvField(reg.email),
+                                escapeCsvField(reg.phoneNumber)
+                            ].join(','))
+                        ].join('\n');
+                        filename = `Rana9_NoWA_Email_${new Date().toISOString().slice(0,10)}.csv`;
+                        break;
+                }
+
+                downloadCSV(csvContent, filename);
+            });
+
+            // Fungsi Logout
+            logoutBtn.addEventListener('click', function() {
+                if (confirm('Apakah Anda yakin ingin logout?')) {
+                    localStorage.removeItem('isLoggedIn');
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
