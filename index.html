@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Recruitment Rana9 2023</title>
+    <title>Open Recruitment Rana9 2026</title>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
@@ -94,23 +94,8 @@
             align-items: center;
         }
         
-        .form-container {
-            background-color: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-            display: none;
-        }
-        
-        .form-container.active {
-            display: block;
-        }
-        
-        .success-container {
+        /* Container Styles */
+        .container {
             background-color: var(--white);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -123,11 +108,11 @@
             text-align: center;
         }
         
-        .success-container.active {
+        .container.active {
             display: block;
         }
         
-        .form-container::before, .success-container::before {
+        .container::before {
             content: '';
             position: absolute;
             top: 0;
@@ -137,34 +122,106 @@
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
         }
         
-        .form-header, .success-header {
-            text-align: center;
-            margin-bottom: 30px;
+        /* Landing Page Styles */
+        .landing-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 32px;
         }
         
-        .form-header h2, .success-header h2 {
+        .landing-container p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Division Info Page Styles */
+        .division-info-container h2 {
             color: var(--primary-color);
             margin-bottom: 10px;
             font-size: 28px;
         }
         
-        .form-header p, .success-header p {
+        .division-info-container p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .division-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .division-table th, .division-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .division-table th {
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-weight: 600;
+        }
+        
+        .division-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .division-table tr:hover {
+            background-color: rgba(106, 17, 203, 0.1);
+        }
+        
+        /* Form Container Styles */
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .form-header p {
             color: #666;
             font-size: 16px;
         }
         
-        .success-icon {
-            font-size: 60px;
-            color: var(--success-color);
-            margin-bottom: 20px;
-        }
-        
         .form-group {
             margin-bottom: 25px;
+            text-align: left;
         }
         
         .form-group label {
-            display: block;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 8px;
             font-weight: 500;
             color: var(--text-color);
@@ -218,58 +275,10 @@
             background: linear-gradient(to right, var(--accent-color), #f2c94c);
         }
         
-        .btn-info {
-            background: linear-gradient(to right, var(--info-color), #138496);
-            padding: 8px 15px;
-            font-size: 14px;
-            margin-left: 10px;
-        }
-        
         .btn-container {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 8px;
-            color: var(--white);
-            font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transform: translateX(120%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .notification.success {
-            background-color: var(--success-color);
-        }
-        
-        .notification.error {
-            background-color: var(--error-color);
-        }
-        
-        .progress-bar {
-            height: 5px;
-            background-color: #eee;
-            margin-bottom: 30px;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .progress {
-            height: 100%;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            width: 0%;
-            transition: width 0.3s;
         }
         
         .division-cards {
@@ -286,6 +295,7 @@
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
+            position: relative; /* Added for info icon positioning */
         }
         
         .division-card:hover {
@@ -304,6 +314,28 @@
             margin-bottom: 10px;
             color: var(--primary-color);
         }
+
+        .division-card .info-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: var(--info-color);
+            background-color: var(--white);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .division-card .info-icon:hover {
+            transform: scale(1.1);
+        }
         
         .error-message {
             color: var(--error-color);
@@ -312,41 +344,13 @@
             display: none;
         }
         
-        footer {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 20px 0;
-            text-align: center;
+        /* Success Page Styles */
+        .success-icon {
+            font-size: 60px;
+            color: var(--success-color);
+            margin-bottom: 20px;
         }
         
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .social-links {
-            margin-bottom: 15px;
-        }
-        
-        .social-links a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: var(--white);
-            margin: 0 10px;
-            transition: all 0.3s;
-        }
-        
-        .social-links a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* Success page styles */
         .success-content {
             margin-bottom: 30px;
         }
@@ -451,7 +455,6 @@
             margin-right: 15px;
         }
         
-        /* New style for certificate bonus info */
         .certificate-bonus-info {
             background-color: rgba(23, 162, 184, 0.1);
             border-left: 4px solid var(--info-color);
@@ -490,7 +493,48 @@
             font-weight: bold;
         }
         
-        /* Modal for Division Info */
+        .progress-bar {
+            height: 5px;
+            background-color: #eee;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: var(--white);
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(120%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: var(--success-color);
+        }
+        
+        .notification.error {
+            background-color: var(--error-color);
+        }
+
+        /* Modal for Selected Division Info */
         .modal {
             display: none;
             position: fixed;
@@ -509,11 +553,10 @@
             padding: 30px;
             border-radius: 15px;
             width: 90%;
-            max-width: 700px;
-            max-height: 80vh;
-            overflow-y: auto;
+            max-width: 500px;
             position: relative;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: left;
         }
         
         .close-modal {
@@ -529,43 +572,52 @@
             color: var(--text-color);
         }
         
-        .modal-header {
-            margin-bottom: 20px;
+        .modal-header h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .modal-body p {
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        footer {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
             text-align: center;
         }
         
-        .modal-header h3 {
-            color: var(--primary-color);
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
-        .division-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .social-links {
+            margin-bottom: 15px;
         }
         
-        .division-table th, .division-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .division-table th {
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
             background-color: var(--primary-color);
             color: var(--white);
-            font-weight: 600;
+            margin: 0 10px;
+            transition: all 0.3s;
         }
         
-        .division-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        
-        .division-table tr:hover {
-            background-color: rgba(106, 17, 203, 0.1);
+        .social-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         @media (max-width: 768px) {
-            .form-container, .success-container {
+            .container {
                 padding: 20px;
             }
             
@@ -582,14 +634,6 @@
                 width: 95%;
                 padding: 20px;
             }
-
-            .division-table {
-                font-size: 14px;
-            }
-            
-            .division-table th, .division-table td {
-                padding: 8px 10px;
-            }
         }
     </style>
 </head>
@@ -601,15 +645,82 @@
                 <h1>Rana9</h1>
             </div>
             <div class="header-info">
-                <p><i class="fas fa-calendar-alt"></i> Open Recruitment 2023</p>
-                <p><i class="fas fa-clock"></i> Deadline: 31 Desember 2023</p>
+                <p><i class="fas fa-calendar-alt"></i> Open Recruitment 2026</p>
+                <p><i class="fas fa-clock"></i> Deadline: 13 Januari 2026</p>
             </div>
         </div>
     </header>
     
     <main>
+        <!-- Landing Container -->
+        <div class="landing-container container active" id="landingContainer">
+            <i class="fas fa-rocket" style="font-size: 60px; color: var(--primary-color); margin-bottom: 20px;"></i>
+            <h2>Selamat Datang di Open Recruitment Rana9 2026</h2>
+            <p>Bergabunglah bersama kami untuk menciptakan perubahan positif dan kembangkan potensi Anda dalam lingkungan yang dinamis dan mendukung.</p>
+            <button class="cta-button" id="showDivisionBtn">
+                <i class="fas fa-arrow-right"></i> Daftar Sekarang
+            </button>
+        </div>
+        
+        <!-- Division Info Container -->
+        <div class="division-info-container container" id="divisionInfoContainer">
+            <h2><i class="fas fa-info-circle"></i> Penjelasan Divisi</h2>
+            <p>Berikut adalah divisi yang tersedia beserta jobdesk masing-masing. Pilih divisi yang sesuai dengan minat dan bakat Anda.</p>
+            
+            <table class="division-table">
+                <thead>
+                    <tr>
+                        <th>Divisi</th>
+                        <th>Jobdesk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sekretaris</td>
+                        <td>Bertanggung jawab dalam pengelolaan administrasi dan surat menyurat.</td>
+                    </tr>
+                    <tr>
+                        <td>Bendahara</td>
+                        <td>Mengelola keuangan UKM.</td>
+                    </tr>
+                    <tr>
+                        <td>Dokumentasi</td>
+                        <td>Mengambil foto dan video untuk dokumentasi kegiatan.</td>
+                    </tr>
+                    <tr>
+                        <td>Pendidikan</td>
+                        <td>Mengatur dan melaksanakan kegiatan pelatihan dan pembelajaran.</td>
+                    </tr>
+                    <tr>
+                        <td>KWU</td>
+                        <td>Mengelola kegiatan kewirausahaan dan bisnis di UKM.</td>
+                    </tr>
+                    <tr>
+                        <td>Publikasi</td>
+                        <td>Mengelola media sosial dan publikasi informasi kegiatan UKM.</td>
+                    </tr>
+                    <tr>
+                        <td>Perkap (Koordinator Alat dan Properti)</td>
+                        <td>Mengatur dan memastikan peralatan serta properti tersedia dengan baik.</td>
+                    </tr>
+                    <tr>
+                        <td>Humas Eksternal</td>
+                        <td>Menjalin hubungan dengan pihak luar dan komunitas eksternal.</td>
+                    </tr>
+                    <tr>
+                        <td>Humas Internal</td>
+                        <td>Mengelola hubungan antar anggota UKM dan internal organisasi.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button class="cta-button" id="showFormBtn">
+                <i class="fas fa-arrow-right"></i> Lanjut ke Form Pendaftaran
+            </button>
+        </div>
+        
         <!-- Form Container -->
-        <div class="form-container active" id="formContainer">
+        <div class="form-container container" id="formContainer">
             <div class="progress-bar">
                 <div class="progress" id="formProgress"></div>
             </div>
@@ -651,11 +762,9 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Pilih Divisi yang Diminati <span class="required">*</span>
-                        <button type="button" class="btn-info" id="divisionInfoBtn">
-                            <i class="fas fa-info-circle"></i> Penjelasan Divisi
-                        </button>
-                    </label>
+                    <p style="color: red;">𖥔 ݁untuk melihat penjelasan bisa klik divisi yg kalian minati dan tekan tombol info (!) 𖥔 ݁</p>
+                    <br>
+                    <label>Pilih Divisi yang Diminati <span class="required">*</span></label>
                     <div class="division-cards" id="divisionCards">
                         <div class="division-card" data-division="Sekretaris">
                             <i class="fas fa-file-alt"></i>
@@ -758,11 +867,11 @@
         </div>
         
         <!-- Success Container -->
-        <div class="success-container" id="successContainer">
+        <div class="success-container container" id="successContainer">
             <div class="success-header">
                 <i class="fas fa-check-circle success-icon"></i>
                 <h2>Pendaftaran Berhasil!</h2>
-                <p>Terima kasih telah mendaftar di Open Recruitment Rana9 2023</p>
+                <p>Terima kasih telah mendaftar di Open Recruitment Rana9 2026</p>
             </div>
             
             <div class="success-content">
@@ -829,66 +938,23 @@
                 <a href="#"><i class="fab fa-linkedin"></i></a>
                 <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
-            <p>&copy; 2023 Rana9. All rights reserved.</p>
+            <p>&copy; 2026 Rana9. All rights reserved - Developers Husain Mulyansyah.</p>
         </div>
     </footer>
     
     <!-- Notification -->
     <div class="notification" id="notification"></div>
     
-    <!-- Modal for Division Info -->
-    <div class="modal" id="divisionModal">
+    <!-- Modal for Selected Division Info -->
+    <div class="modal" id="selectedDivisionModal">
         <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
+            <span class="close-modal" id="closeSelectedModal">&times;</span>
             <div class="modal-header">
-                <h3><i class="fas fa-info-circle"></i> Penjelasan Divisi</h3>
+                <h3>Jobdesk Divisi</h3>
             </div>
-            <table class="division-table">
-                <thead>
-                    <tr>
-                        <th>Divisi</th>
-                        <th>Jobdesk</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Sekretaris</td>
-                        <td>Bertanggung jawab dalam pengelolaan administrasi dan surat menyurat.</td>
-                    </tr>
-                    <tr>
-                        <td>Bendahara</td>
-                        <td>Mengelola keuangan UKM.</td>
-                    </tr>
-                    <tr>
-                        <td>Dokumentasi</td>
-                        <td>Mengambil foto dan video untuk dokumentasi kegiatan.</td>
-                    </tr>
-                    <tr>
-                        <td>Pendidikan</td>
-                        <td>Mengatur dan melaksanakan kegiatan pelatihan dan pembelajaran.</td>
-                    </tr>
-                    <tr>
-                        <td>KWU</td>
-                        <td>Mengelola kegiatan kewirausahaan dan bisnis di UKM.</td>
-                    </tr>
-                    <tr>
-                        <td>Publikasi</td>
-                        <td>Mengelola media sosial dan publikasi informasi kegiatan UKM.</td>
-                    </tr>
-                    <tr>
-                        <td>Perkap (Koordinator Alat dan Properti)</td>
-                        <td>Mengatur dan memastikan peralatan serta properti tersedia dengan baik.</td>
-                    </tr>
-                    <tr>
-                        <td>Humas Eksternal</td>
-                        <td>Menjalin hubungan dengan pihak luar dan komunitas eksternal.</td>
-                    </tr>
-                    <tr>
-                        <td>Humas Internal</td>
-                        <td>Mengelola hubungan antar anggota UKM dan internal organisasi.</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="modal-body">
+                <p id="selectedDivisionDescription"></p>
+            </div>
         </div>
     </div>
     
@@ -908,10 +974,30 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         
-        // DOM Elements
-        const form = document.getElementById('registrationForm');
+        // Job descriptions data
+        const jobDescriptions = {
+            "Sekretaris": "Bertanggung jawab dalam pengelolaan administrasi dan surat menyurat.",
+            "Bendahara": "Mengelola keuangan UKM.",
+            "Divisi Pendidikan": "Mengatur dan melaksanakan kegiatan pelatihan dan pembelajaran.",
+            "Divisi Kewirausahaan": "Mengelola kegiatan kewirausahaan dan bisnis di UKM.",
+            "Humas (Internal & Eksternal)": "Menjalin hubungan dengan pihak luar dan komunitas eksternal serta mengelola hubungan antar anggota.",
+            "Divisi Perkap": "Mengatur dan memastikan peralatan serta properti tersedia dengan baik.",
+            "Divisi Dokumentasi": "Mengambil foto dan video untuk dokumentasi kegiatan.",
+            "Divisi Publikasi": "Mengelola media sosial dan publikasi informasi kegiatan UKM."
+        };
+        
+        // DOM Elements for containers
+        const landingContainer = document.getElementById('landingContainer');
+        const divisionInfoContainer = document.getElementById('divisionInfoContainer');
         const formContainer = document.getElementById('formContainer');
         const successContainer = document.getElementById('successContainer');
+        
+        // DOM Elements for navigation
+        const showDivisionBtn = document.getElementById('showDivisionBtn');
+        const showFormBtn = document.getElementById('showFormBtn');
+        
+        // DOM Elements for form
+        const form = document.getElementById('registrationForm');
         const fullNameInput = document.getElementById('fullName');
         const nimInput = document.getElementById('nim');
         const emailInput = document.getElementById('email');
@@ -925,10 +1011,10 @@
         const notification = document.getElementById('notification');
         const formProgress = document.getElementById('formProgress');
         
-        // Division info modal elements
-        const divisionInfoBtn = document.getElementById('divisionInfoBtn');
-        const divisionModal = document.getElementById('divisionModal');
-        const closeModalBtn = document.getElementById('closeModal');
+        // DOM Elements for modal
+        const selectedDivisionModal = document.getElementById('selectedDivisionModal');
+        const closeSelectedModalBtn = document.getElementById('closeSelectedModal');
+        const selectedDivisionDescription = document.getElementById('selectedDivisionDescription');
         
         // Division cards
         const divisionCards = document.querySelectorAll('#divisionCards .division-card');
@@ -946,6 +1032,86 @@
             secondDivision: document.getElementById('secondDivisionError'),
             secondDivisionReason: document.getElementById('secondDivisionReasonError')
         };
+        
+        // Navigation between containers
+        showDivisionBtn.addEventListener('click', function() {
+            landingContainer.classList.remove('active');
+            divisionInfoContainer.classList.add('active');
+            window.scrollTo(0, 0);
+        });
+        
+        showFormBtn.addEventListener('click', function() {
+            divisionInfoContainer.classList.remove('active');
+            formContainer.classList.add('active');
+            window.scrollTo(0, 0);
+        });
+        
+        // Handle division selection with info icon
+        divisionCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Remove all info icons first
+                divisionCards.forEach(c => {
+                    const icon = c.querySelector('.info-icon');
+                    if(icon) icon.remove();
+                });
+
+                divisionCards.forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Add info icon to the selected card
+                const infoIcon = document.createElement('i');
+                infoIcon.className = 'fas fa-info-circle info-icon';
+                this.appendChild(infoIcon);
+                
+                // Add click event to the info icon
+                infoIcon.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent card click
+                    const divisionName = card.dataset.division;
+                    const description = jobDescriptions[divisionName];
+                    
+                    selectedDivisionDescription.innerHTML = `<strong>${divisionName}:</strong><br><br>${description}`;
+                    selectedDivisionModal.style.display = 'flex';
+                });
+
+                firstDivisionInput.value = this.dataset.division;
+                
+                // Disable selected division in second division cards
+                secondDivisionCards.forEach(c => {
+                    if (c.dataset.division === this.dataset.division) {
+                        c.style.opacity = '0.5';
+                        c.style.pointerEvents = 'none';
+                    } else {
+                        c.style.opacity = '1';
+                        c.style.pointerEvents = 'auto';
+                    }
+                });
+                
+                updateProgressBar();
+            });
+        });
+        
+        secondDivisionCards.forEach(card => {
+            card.addEventListener('click', function() {
+                if (this.style.opacity === '0.5') return;
+                
+                secondDivisionCards.forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                secondDivisionInput.value = this.dataset.division;
+                updateProgressBar();
+            });
+        });
+        
+        // Handle modal close
+        closeSelectedModalBtn.addEventListener('click', function() {
+            selectedDivisionModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === selectedDivisionModal) {
+                selectedDivisionModal.style.display = 'none';
+            }
+        });
         
         // Form validation
         function validateForm() {
@@ -1094,39 +1260,6 @@
             }
         });
         
-        // Handle division selection
-        divisionCards.forEach(card => {
-            card.addEventListener('click', function() {
-                divisionCards.forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                firstDivisionInput.value = this.dataset.division;
-                
-                // Disable selected division in second division cards
-                secondDivisionCards.forEach(c => {
-                    if (c.dataset.division === this.dataset.division) {
-                        c.style.opacity = '0.5';
-                        c.style.pointerEvents = 'none';
-                    } else {
-                        c.style.opacity = '1';
-                        c.style.pointerEvents = 'auto';
-                    }
-                });
-                
-                updateProgressBar();
-            });
-        });
-        
-        secondDivisionCards.forEach(card => {
-            card.addEventListener('click', function() {
-                if (this.style.opacity === '0.5') return;
-                
-                secondDivisionCards.forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                secondDivisionInput.value = this.dataset.division;
-                updateProgressBar();
-            });
-        });
-        
         // Handle input events
         [fullNameInput, nimInput, emailInput, phoneNumberInput, reasonInput, firstDivisionReasonInput, secondDivisionReasonInput].forEach(input => {
             input.addEventListener('input', function() {
@@ -1142,6 +1275,8 @@
             form.reset();
             document.querySelectorAll('.division-card').forEach(card => {
                 card.classList.remove('selected');
+                const icon = card.querySelector('.info-icon');
+                if(icon) icon.remove();
             });
             secondDivisionCards.forEach(c => {
                 c.style.opacity = '1';
@@ -1151,23 +1286,6 @@
                 msg.style.display = 'none';
             });
             updateProgressBar();
-        });
-        
-        // Handle division info button
-        divisionInfoBtn.addEventListener('click', function() {
-            divisionModal.style.display = 'flex';
-        });
-        
-        // Handle modal close
-        closeModalBtn.addEventListener('click', function() {
-            divisionModal.style.display = 'none';
-        });
-        
-        // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
-            if (e.target === divisionModal) {
-                divisionModal.style.display = 'none';
-            }
         });
         
         // Generate QR Code for WhatsApp link
