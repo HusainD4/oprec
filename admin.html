@@ -81,6 +81,131 @@
             opacity: 0.8;
         }
         
+        /* Admin Profile Section */
+        .admin-profile {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .admin-profile-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .admin-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--white);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .admin-info h4 {
+            font-size: 16px;
+            margin-bottom: 3px;
+            font-weight: 600;
+        }
+        
+        .admin-info p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .admin-status {
+            display: inline-flex;
+            align-items: center;
+            font-size: 12px;
+            padding: 4px 10px;
+            background-color: rgba(46, 204, 113, 0.2);
+            border-radius: 20px;
+            color: #2ecc71;
+        }
+        
+        .admin-status i {
+            width: 8px;
+            height: 8px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 6px rgba(46, 204, 113, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+            }
+        }
+        
+        .admin-list-toggle {
+            width: 100%;
+            padding: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .admin-list-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .admin-list {
+            margin-top: 10px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .admin-list.show {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .admin-list-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 13px;
+            transition: background-color 0.3s;
+        }
+        
+        .admin-list-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-list-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            font-weight: 500;
+        }
+        
+        .admin-list-item i {
+            margin-right: 8px;
+            font-size: 12px;
+        }
+        
         .admin-menu {
             padding: 20px 0;
         }
@@ -160,6 +285,19 @@
             text-align: center;
             font-size: 18px;
             font-weight: 600;
+        }
+        
+        .mobile-admin-info {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .mobile-admin-info i {
+            margin-right: 5px;
         }
         
         /* Main Content */
@@ -517,6 +655,24 @@
                 left: 10px;
                 max-width: none;
             }
+            
+            .admin-profile {
+                padding: 15px;
+            }
+            
+            .admin-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .admin-info h4 {
+                font-size: 14px;
+            }
+            
+            .admin-info p {
+                font-size: 11px;
+            }
         }
         
         /* Overlay for mobile sidebar */
@@ -542,6 +698,33 @@
         <div class="admin-header">
             <h2><i class="fas fa-user-shield"></i> Admin Panel</h2>
             <p>Rana9 Open Recruitment</p>
+        </div>
+        
+        <!-- Admin Profile Section -->
+        <div class="admin-profile">
+            <div class="admin-profile-card">
+                <div class="admin-avatar" id="adminAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="admin-info">
+                    <h4 id="adminName">Loading...</h4>
+                    <p id="adminEmail">Loading...</p>
+                </div>
+            </div>
+            <div class="admin-status">
+                <i></i>
+                <span>Online</span>
+                <br>
+            </div>
+            <br>
+            <br>
+            <button class="admin-list-toggle" id="adminListToggle">
+                <span>Lihat Admin Lainnya</span>
+                <i class="fas fa-chevron-down" id="adminListIcon"></i>
+            </button>
+            <div class="admin-list" id="adminList">
+                <!-- Admin list will be populated here -->
+            </div>
         </div>
         
         <nav class="admin-menu">
@@ -573,6 +756,10 @@
             <i class="fas fa-bars"></i>
         </button>
         <div class="mobile-header-title" id="mobilePageTitle">Semua Data Pendaftar</div>
+        <div class="mobile-admin-info">
+            <i class="fas fa-user-circle"></i>
+            <span id="mobileAdminName">Admin</span>
+        </div>
     </header>
     
     <!-- Sidebar Overlay -->
@@ -725,6 +912,15 @@
         const notification = document.getElementById('notification');
         const mobilePageTitle = document.getElementById('mobilePageTitle');
         
+        // Admin Profile Elements
+        const adminAvatar = document.getElementById('adminAvatar');
+        const adminName = document.getElementById('adminName');
+        const adminEmail = document.getElementById('adminEmail');
+        const mobileAdminName = document.getElementById('mobileAdminName');
+        const adminListToggle = document.getElementById('adminListToggle');
+        const adminListIcon = document.getElementById('adminListIcon');
+        const adminList = document.getElementById('adminList');
+        
         // Page Elements
         const allDataPage = document.getElementById('allDataPage');
         const divisionStatsPage = document.getElementById('divisionStatsPage');
@@ -754,6 +950,15 @@
         let allRegistrations = [];
         let divisionStats = {};
         let totalRegistrants = 0;
+        let currentUser = null;
+        
+        // Admin List (hardcoded for demo, can be fetched from Firebase)
+        const adminUsers = [
+            // { email: 'alma@hsn.com', name: 'Alma', role: 'Admin' },
+            // { email: 'alvin@hsn.com', name: 'Alvin', role: 'Admin' },
+            { email: 'sync@hsn.com', name: 'Server', role: 'Admin Data' },
+            { email: 'husain@gmail.com', name: 'Husain', role: 'Super Admin' }
+        ];
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
@@ -763,6 +968,11 @@
                     // Redirect to login page if not logged in
                     window.location.href = 'login.html';
                 } else {
+                    currentUser = user;
+                    // Update admin profile
+                    updateAdminProfile(user);
+                    // Load admin list
+                    loadAdminList();
                     // Load initial data
                     loadAllData();
                     loadDivisionStats();
@@ -779,6 +989,19 @@
             sidebarOverlay.addEventListener('click', function() {
                 adminSidebar.classList.remove('active');
                 sidebarOverlay.classList.remove('active');
+            });
+            
+            // Admin List Toggle
+            adminListToggle.addEventListener('click', function() {
+                adminList.classList.toggle('show');
+                const icon = adminListIcon;
+                if (adminList.classList.contains('show')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
             });
             
             // Logout
@@ -906,6 +1129,71 @@
             checkAllData.addEventListener('change', updatePreviewTable);
             checkStats.addEventListener('change', updatePreviewTable);
         });
+        
+        // Update Admin Profile
+        function updateAdminProfile(user) {
+            // Get admin info from the list
+            const adminInfo = adminUsers.find(admin => admin.email === user.email) || {
+                name: user.email.split('@')[0],
+                email: user.email,
+                role: 'Admin'
+            };
+            
+            // Update sidebar
+            adminName.textContent = adminInfo.name;
+            adminEmail.textContent = adminInfo.email;
+            
+            // Update mobile header
+            mobileAdminName.textContent = adminInfo.name;
+            
+            // Update avatar with initial
+            const initial = adminInfo.name.charAt(0).toUpperCase();
+            adminAvatar.innerHTML = initial;
+            adminAvatar.style.background = `linear-gradient(135deg, ${getRandomColor()}, ${getRandomColor()})`;
+        }
+        
+        // Load Admin List
+        function loadAdminList() {
+            adminList.innerHTML = '';
+            
+            adminUsers.forEach(admin => {
+                const adminItem = document.createElement('div');
+                adminItem.className = 'admin-list-item';
+                
+                // Check if this is the current user
+                if (currentUser && admin.email === currentUser.email) {
+                    adminItem.classList.add('active');
+                }
+                
+                // Determine icon based on role
+                let icon = 'fa-user';
+                if (admin.role === 'Super Admin') {
+                    icon = 'fa-user-shield';
+                } else if (admin.role === 'Admin') {
+                    icon = 'fa-user-check';
+                }
+                
+                adminItem.innerHTML = `
+                    <i class="fas ${icon}"></i>
+                    <div>
+                        <div style="font-weight: 500;">${admin.name}</div>
+                        <div style="font-size: 11px; opacity: 0.7;">${admin.role}</div>
+                    </div>
+                `;
+                
+                adminList.appendChild(adminItem);
+            });
+        }
+        
+        // Get Random Color for Avatar
+        function getRandomColor() {
+            const colors = [
+                '#667eea', '#764ba2', '#f093fb', '#f5576c',
+                '#4facfe', '#00f2fe', '#43e97b', '#38f9d7',
+                '#fa709a', '#fee140', '#30cfd0', '#330867'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
         
         // Load All Data
         function loadAllData() {
