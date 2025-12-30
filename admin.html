@@ -955,7 +955,7 @@
         // Admin List (hardcoded for demo, can be fetched from Firebase)
         const adminUsers = [
 
-            { email: 'sync@hsn.com', name: 'Server', role: 'Admin Data' },
+            { email: 'sync@hsn.com', name: 'Server', role: 'Server Data' },
             { email: 'husain@gmail.com', name: 'Husain', role: 'Super Admin' },
             { email: 'alma@hsn.com', name: 'Alma', role: 'Admin' },
             { email: 'alvin@hsn.com', name: 'Alvin', role: 'Admin' },
@@ -1165,15 +1165,18 @@
                 if (currentUser && admin.email === currentUser.email) {
                     adminItem.classList.add('active');
                 }
-                
+
                 // Determine icon based on role
                 let icon = 'fa-user';
+
                 if (admin.role === 'Super Admin') {
                     icon = 'fa-user-shield';
                 } else if (admin.role === 'Admin') {
                     icon = 'fa-user-check';
+                } else if (admin.role === 'Admin Server' || admin.role === 'Server Data') {
+                    icon = 'fa-server';
                 }
-                
+
                 adminItem.innerHTML = `
                     <i class="fas ${icon}"></i>
                     <div>
