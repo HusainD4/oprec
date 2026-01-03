@@ -1498,56 +1498,6 @@
             margin-right: 10px;
             color: var(--primary-color);
         }
-        /* Tambahkan ini di dalam style tag */
-.modal-header {
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-    color: var(--white);
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal-header h3 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.modal-close {
-    background: none;
-    border: none;
-    color: var(--white);
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.modal-close:hover {
-    transform: rotate(90deg);
-}
-
-.admin-form-group input[readonly] {
-    background-color: #f8f9fa;
-    cursor: not-allowed;
-}
-
-.password-strength {
-    margin-top: 5px;
-    font-size: 12px;
-}
-
-.password-strength.weak {
-    color: var(--error-color);
-}
-
-.password-strength.medium {
-    color: var(--warning-color);
-}
-
-.password-strength.strong {
-    color: var(--success-color);
-}
     </style>
 </head>
 <body>
@@ -1573,7 +1523,6 @@
                 <i></i>
                 <span>Online</span>
             </div>
-            <br><br>
             <button class="admin-list-toggle" id="adminListToggle">
                 <span>Lihat Admin Lainnya</span>
                 <i class="fas fa-chevron-down" id="adminListIcon"></i>
@@ -1652,11 +1601,8 @@
                         <i class="fas fa-sync-alt"></i> Refresh
                     </button>
                 </div>
-
             </div>
-                <i style="color: red;">*tolong jangan gunakan kirim email - karna masih maintenance!</i>
-                <br>
-                <i style="color: red;">*Tombol aksi masih dalam pengembangan untuk role Admin</i>
+                <i style="color: red;">tolong jangan gunakan kirim email - karna masih maintenance!</i>
             <br><br>
             <!-- Search and Filter Section -->
             <div class="search-filter-container">
@@ -1996,107 +1942,67 @@
         </div>
         
         <!-- Admin Management Page (only visible to super admin) -->
-        <!-- Tambahkan ini di dalam halaman admin.html, tepatnya di dalam "Admin Management Page" -->
-<div class="admin-content" id="adminManagementPage" style="display: none;">
-    <div class="admin-content-header">
-        <h2>Manajemen Admin</h2>
-        <div class="admin-actions">
-            <button class="btn btn-primary" id="addAdminBtn">
-                <i class="fas fa-plus"></i> Tambah Admin
-            </button>
-        </div>
-    </div>
-    
-    <div class="admin-management">
-        <h3>Form Tambah Admin</h3>
-        <div class="admin-form">
-            <div class="admin-form-group">
-                <label>Email:</label>
-                <input type="email" id="newAdminEmail" placeholder="Masukkan email admin">
-            </div>
-            <div class="admin-form-group">
-                <label>Nama:</label>
-                <input type="text" id="newAdminName" placeholder="Masukkan nama admin">
-            </div>
-            <div class="admin-form-group">
-                <label>Role:</label>
-                <select id="newAdminRole">
-                    <option value="admin">Admin</option>
-                    <option value="server">Server</option>
-                </select>
-            </div>
-            <div class="admin-form-group">
-                <label>Password:</label>
-                <input type="password" id="newAdminPassword" placeholder="Masukkan password (kosongkan untuk generate otomatis)">
-            </div>
-            <button class="btn btn-primary" id="saveAdminBtn">
-                <i class="fas fa-save"></i> Simpan Admin
-            </button>
-        </div>
-    </div>
-    
-    <div class="admin-content-header" style="margin-top: 30px;">
-        <h3>Daftar Admin</h3>
-    </div>
-    
-    <div class="table-container">
-        <div class="table-wrapper">
-            <table class="admin-list-table" id="adminListTable">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Nama</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="adminListTableBody">
-                    <!-- Admin list will be inserted here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- Tambahkan modal untuk reset password -->
-<div class="modal" id="resetPasswordModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Reset Password Admin</h3>
-            <button class="modal-close" id="closeResetPasswordModal">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="admin-form">
-                <div class="admin-form-group">
-                    <label>Email Admin:</label>
-                    <input type="email" id="resetAdminEmail" readonly>
-                </div>
-                <div class="admin-form-group">
-                    <label>Nama Admin:</label>
-                    <input type="text" id="resetAdminName" readonly>
-                </div>
-                <div class="admin-form-group">
-                    <label>Password Baru:</label>
-                    <input type="password" id="resetAdminPassword" placeholder="Masukkan password baru (kosongkan untuk generate otomatis)">
-                </div>
-                <div class="admin-form-group">
-                    <label>Konfirmasi Password:</label>
-                    <input type="password" id="resetAdminPasswordConfirm" placeholder="Konfirmasi password baru">
-                </div>
-                <div class="admin-actions" style="justify-content: center; margin-top: 20px;">
-                    <button class="btn btn-secondary" id="cancelResetPassword">
-                        <i class="fas fa-times"></i> Batal
-                    </button>
-                    <button class="btn btn-primary" id="confirmResetPassword">
-                        <i class="fas fa-key"></i> Reset Password
+        <div class="admin-content" id="adminManagementPage" style="display: none;">
+            <div class="admin-content-header">
+                <h2>Manajemen Admin</h2>
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="addAdminBtn">
+                        <i class="fas fa-plus"></i> Tambah Admin
                     </button>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
             
+            <div class="admin-management">
+                <h3>Form Tambah Admin</h3>
+                <div class="admin-form">
+                    <div class="admin-form-group">
+                        <label>Email:</label>
+                        <input type="email" id="newAdminEmail" placeholder="Masukkan email admin">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Nama:</label>
+                        <input type="text" id="newAdminName" placeholder="Masukkan nama admin">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Role:</label>
+                        <select id="newAdminRole">
+                            <option value="admin">Admin</option>
+                            <option value="server">Server</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Password:</label>
+                        <input type="password" id="newAdminPassword" placeholder="Masukkan password (kosongkan untuk generate otomatis)">
+                    </div>
+                    <button class="btn btn-primary" id="saveAdminBtn">
+                        <i class="fas fa-save"></i> Simpan Admin
+                    </button>
+                </div>
+            </div>
+            
+            <div class="admin-content-header" style="margin-top: 30px;">
+                <h3>Daftar Admin</h3>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table class="admin-list-table" id="adminListTable">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Nama</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminListTableBody">
+                            <!-- Admin list will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </main>
     
     <!-- Floating Action Button for Mobile -->
@@ -2334,7 +2240,6 @@
         const modalName = document.getElementById('modalName');
         const modalNIM = document.getElementById('modalNIM');
         const modalProdi = document.getElementById('modalProdi');
-        const modalTanggalLahir = document.getElementById('modalTanggalLahir');
         const modalEmail = document.getElementById('modalEmail');
         const modalWhatsApp = document.getElementById('modalWhatsApp');
         const modalDivisi1 = document.getElementById('modalDivisi1');
@@ -2667,6 +2572,19 @@
                 document.querySelector('[data-page="download-data"]').click();
                 fabMenu.classList.remove('show');
             });
+
+            // *** PERBAIKAN UTAMA: EVENT DELEGATION UNTUK TOMBOL VIEW ***
+            // Gunakan event delegation untuk tombol view yang akan dibuat di masa mendatang
+            document.getElementById('allDataTableBody').addEventListener('click', function(event) {
+                // Periksa apakah yang diklik adalah tombol view atau anak dari tombol view (misalnya ikon <i>)
+                const viewButton = event.target.closest('.view-details');
+                
+                if (viewButton) {
+                    // Jika ya, ambil ID dan tampilkan detail
+                    const registrationId = viewButton.getAttribute('data-id');
+                    showApplicantDetails(registrationId);
+                }
+            });
         });
         
         // Load User Role
@@ -2741,8 +2659,6 @@
                 adminManagementMenuItem.style.display = 'none';
                 document.querySelector('[data-page="email-settings"]').style.display = 'none';
                 document.querySelector('[data-page="notifications"]').style.display = 'none';
-                
-                
             }
             
             // Show/hide FAB based on screen size
@@ -3352,13 +3268,8 @@
                 allDataTableBody.appendChild(row);
             });
             
-            // Add event listeners to view buttons
-            document.querySelectorAll('.view-details').forEach(button => {
-                button.addEventListener('click', function() {
-                    const registrationId = this.getAttribute('data-id');
-                    showApplicantDetails(registrationId);
-                });
-            });
+            // *** PERBAIKAN: HAPUS EVENT LISTENER LAMA YANG TIDAK EFEKTIF ***
+            // Kode event listener untuk tombol view sudah dipindahkan ke atas menggunakan event delegation
             
             // Add event listeners to checkboxes
             document.querySelectorAll('.applicant-checkbox').forEach(checkbox => {
@@ -3466,7 +3377,6 @@
             modalName.textContent = registration.nama;
             modalNIM.textContent = registration.nim;
             modalProdi.textContent = registration.prodi;
-            modalTanggalLahir.textContent = registration.tanggalLahir || '-';
             modalEmail.textContent = registration.email;
             modalWhatsApp.textContent = registration.noWa;
             modalDivisi1.textContent = registration.firstDivision;
@@ -3797,7 +3707,7 @@
                         <td>${registration.nama}</td>
                         <td>${registration.nim}</td>
                         <td>${registration.prodi}</td>
-                        <td>${registration.tanggalLahir}</td>
+                        <td>${registration.tanggalLahir || '-'}</td>
                         <td>${registration.email}</td>
                         <td>${registration.noWa}</td>
                         <td>${registration.firstDivision}</td>
@@ -3913,7 +3823,7 @@
                 reg.nama,
                 reg.nim,
                 reg.prodi,
-                reg.tanggalLahir,
+                reg.tanggalLahir || '-',
                 reg.email,
                 reg.noWa,
                 reg.firstDivision,
@@ -4097,7 +4007,7 @@
                         <p><strong>Nama:</strong> ${applicant.nama}</p>
                         <p><strong>NIM:</strong> ${applicant.nim}</p>
                         <p><strong>Prodi:</strong> ${applicant.prodi}</p>
-                        <p><strong>Tanggal Lahir:</strong> ${applicant.tanggalLahir}</p>
+                        <p><strong>Tanggal Lahir:</strong> ${applicant.tanggalLahir || '-'}</p>
                         <p><strong>Email:</strong> ${applicant.email}</p>
                         <p><strong>No. WhatsApp:</strong> ${applicant.noWa}</p>
                         <p><strong>Divisi Pilihan 1:</strong> ${applicant.firstDivision}</p>
@@ -4218,8 +4128,6 @@
                 fabMenu.classList.remove('show');
             }
         });
-
-        
     </script>
 </body>
 </html>
