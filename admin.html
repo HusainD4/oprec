@@ -2701,7 +2701,7 @@
                         loadAdminList();
                         
                         // Load email settings
-                        // loadEmailSettings();
+                        loadEmailSettings();
                         
                         // Load initial data
                         loadAllData();
@@ -2739,6 +2739,10 @@
                 // Regular admin can't access server status or admin management
                 serverStatusMenuItem.style.display = 'none';
                 adminManagementMenuItem.style.display = 'none';
+                document.querySelector('[data-page="email-settings"]').style.display = 'none';
+                document.querySelector('[data-page="notifications"]').style.display = 'none';
+                
+                
             }
             
             // Show/hide FAB based on screen size
