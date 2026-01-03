@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Konten Halaman - Rana9</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TinyMCE untuk rich text editor -->
+    <script src="https://cdn.tiny.cloud/tiny/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    
+    <style>
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #f2994a;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+            --info-color: #17a2b8;
+            --dark-color: #2c3e50;
+            --sidebar-width: 250px;
+            --mobile-header-height: 60px;
+            --warning-color: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Admin Sidebar */
+        .admin-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .admin-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .admin-header p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* Admin Profile Section */
+        .admin-profile {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .admin-profile-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .admin-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--white);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .admin-info h4 {
+            font-size: 16px;
+            margin-bottom: 3px;
+            font-weight: 600;
+        }
+        
+        .admin-info p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .admin-status {
+            display: inline-flex;
+            align-items: center;
+            font-size: 12px;
+            padding: 4px 10px;
+            background-color: rgba(46, 204, 113, 0.2);
+            border-radius: 20px;
+            color: #2ecc71;
+        }
+        
+        .admin-status i {
+            width: 8px;
+            height: 8px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 6px rgba(46, 204, 113, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+            }
+        }
+        
+        .admin-menu {
+            padding: 20px 0;
+        }
+        
+        .admin-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .admin-menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-menu-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .admin-menu-item i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .admin-logout {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        .admin-logout button {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin: 0 auto;
+            transition: all 0.3s;
+        }
+        
+        .admin-logout button:hover {
+            color: var(--accent-color);
+        }
+        
+        .admin-logout button i {
+            margin-right: 10px;
+        }
+        
+        /* Mobile Header */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--mobile-header-height);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            z-index: 999;
+            align-items: center;
+            padding: 0 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-header-title {
+            flex: 1;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .mobile-admin-info {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .mobile-admin-info i {
+            margin-right: 5px;
+        }
+        
+        /* Main Content */
+        .admin-main {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            flex: 1;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .admin-content {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .admin-content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .admin-content-header h2 {
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: var(--white);
+        }
+        
+        .btn-info {
+            background-color: var(--info-color);
+            color: var(--white);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: var(--white);
+        }
+        
+        .btn-danger {
+            background-color: var(--error-color);
+            color: var(--white);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: var(--white);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            color: var(--primary-color);
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Division List */
+        .division-list {
+            margin-bottom: 20px;
+        }
+        
+        .division-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+        
+        .division-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .division-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .division-info {
+            flex: 1;
+        }
+        
+        .division-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        
+        .division-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .division-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-sm {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: var(--white);
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(120%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1002;
+            max-width: 350px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: var(--success-color);
+        }
+        
+        .notification.error {
+            background-color: var(--error-color);
+        }
+        
+        .notification.info {
+            background-color: var(--info-color);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1003;
+            overflow-y: auto;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s;
+            overflow: hidden;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                width: 80%;
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-main {
+                margin-left: 0;
+                padding-top: calc(var(--mobile-header-height) + 20px);
+            }
+            
+            .mobile-header {
+                display: flex;
+            }
+            
+            .admin-content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .admin-content-header h2 {
+                font-size: 20px;
+            }
+            
+            .notification {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+        
+        /* Overlay for mobile sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* Menu Toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Loading Spinner */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(106, 17, 203, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-header">
+            <h2><i class="fas fa-cog"></i> Pengaturan Konten</h2>
+            <p>Rana9 Open Recruitment</p>
+        </div>
+        
+        <!-- Admin Profile Section -->
+        <div class="admin-profile">
+            <div class="admin-profile-card">
+                <div class="admin-avatar" id="adminAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="admin-info">
+                    <h4 id="adminName">Loading...</h4>
+                    <p id="adminEmail">Loading...</p>
+                </div>
+            </div>
+            <div class="admin-status">
+                <i></i>
+                <span>Online</span>
+            </div>
+        </div>
+        
+        <nav class="admin-menu">
+            <a href="#" class="admin-menu-item active" data-page="general">
+                <i class="fas fa-home"></i>
+                <span>Umum</span>
+            </a>
+            <a href="#" class="admin-menu-item" data-page="divisions">
+                <i class="fas fa-users"></i>
+                <span>Divisi</span>
+            </a>
+            <a href="#" class="admin-menu-item" data-page="success">
+                <i class="fas fa-check-circle"></i>
+                <span>Halaman Sukses</span>
+            </a>
+            <a href="#" class="admin-menu-item" data-page="maintenance">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Halaman Maintenance</span>
+            </a>
+            <a href="#" class="admin-menu-item" data-page="footer">
+                <i class="fas fa-info"></i>
+                <span>Footer</span>
+            </a>
+        </nav>
+        
+        <div class="admin-logout">
+            <button id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+    
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-header-title" id="mobilePageTitle">Pengaturan Konten</div>
+        <div class="mobile-admin-info">
+            <i class="fas fa-user-circle"></i>
+            <span id="mobileAdminName">Admin</span>
+        </div>
+    </header>
+    
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- General Settings Page -->
+        <div class="admin-content" id="generalPage">
+            <div class="admin-content-header">
+                <h2>Pengaturan Konten Umum</h2>
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="saveGeneralBtn">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="header">Header</div>
+                <div class="tab" data-tab="landing">Landing</div>
+                <div class="tab" data-tab="form">Form</div>
+            </div>
+            
+            <!-- Header Tab Content -->
+            <div class="tab-content active" id="headerTab">
+                <div class="form-group">
+                    <label for="logoText">Teks Logo</label>
+                    <input type="text" id="logoText" class="form-control" placeholder="Rana9">
+                </div>
+                
+                <div class="form-group">
+                    <label for="recruitmentTitle">Judul Rekrutmen</label>
+                    <input type="text" id="recruitmentTitle" class="form-control" placeholder="Open Recruitment 2026">
+                </div>
+                
+                <div class="form-group">
+                    <label for="deadlineText">Teks Deadline</label>
+                    <input type="text" id="deadlineText" class="form-control" placeholder="Deadline: 13 Januari 2026">
+                </div>
+            </div>
+            
+            <!-- Landing Tab Content -->
+            <div class="tab-content" id="landingTab">
+                <div class="form-group">
+                    <label for="welcomeTitle">Judul Halaman Utama</label>
+                    <input type="text" id="welcomeTitle" class="form-control" placeholder="Selamat Datang di Open Recruitment Rana9 2026">
+                </div>
+                
+                <div class="form-group">
+                    <label for="welcomeDesc">Deskripsi Halaman Utama</label>
+                    <textarea id="welcomeDesc" class="form-control" placeholder="Bergabunglah bersama kami untuk menciptakan perubahan positif dan kembangkan potensi Anda..."></textarea>
+                </div>
+            </div>
+            
+            <!-- Form Tab Content -->
+            <div class="tab-content" id="formTab">
+                <div class="form-group">
+                    <label for="formTitle">Judul Form</label>
+                    <input type="text" id="formTitle" class="form-control" placeholder="Form Pendaftaran Rana9">
+                </div>
+                
+                <div class="form-group">
+                    <label for="formDesc">Deskripsi Form</label>
+                    <textarea id="formDesc" class="form-control" placeholder="Bergabunglah bersama kami untuk menciptakan perubahan positif!"></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Divisions Page -->
+        <div class="admin-content" id="divisionsPage" style="display: none;">
+            <div class="admin-content-header">
+                <h2>Pengaturan Divisi</h2>
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="addDivisionBtn">
+                        <i class="fas fa-plus"></i> Tambah Divisi
+                    </button>
+                </div>
+            </div>
+            
+            <div class="division-list" id="divisionList">
+                <!-- Division items will be inserted here -->
+            </div>
+        </div>
+        
+        <!-- Success Page -->
+        <div class="admin-content" id="successPage" style="display: none;">
+            <div class="admin-content-header">
+                <h2>Pengaturan Halaman Sukses</h2>
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="saveSuccessBtn">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="successTitle">Judul Halaman Sukses</label>
+                <input type="text" id="successTitle" class="form-control" placeholder="Pendaftaran Berhasil!">
+            </div>
+            
+            <div class="form-group">
+                <label for="successDesc">Deskripsi Halaman Sukses</label>
+                <textarea id="successDesc" class="form-control" placeholder="Terima kasih telah mendaftar di Open Recruitment Rana9 2026"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="successMessage">Pesan Sukses</label>
+                <textarea id="successMessage" class="form-control" placeholder="Selamat! Pendaftaran Anda telah kami terima. Semoga Anda beruntung dalam proses seleksi ini."></textarea>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="certificate">Sertifikat</div>
+                <div class="tab" data-tab="whatsapp">WhatsApp</div>
+            </div>
+            
+            <!-- Certificate Tab Content -->
+            <div class="tab-content active" id="certificateTab">
+                <div class="form-group">
+                    <label for="certSectionTitle">Judul Bagian Sertifikat</label>
+                    <input type="text" id="certSectionTitle" class="form-control" placeholder="Upload Sertifikat (Opsional)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="certSectionDesc">Deskripsi Bagian Sertifikat</label>
+                    <textarea id="certSectionDesc" class="form-control" placeholder="Jika Anda memiliki sertifikat yang relevan, silakan upload melalui link berikut:"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="certLinkTitle">Judul Link Sertifikat</label>
+                    <input type="text" id="certLinkTitle" class="form-control" placeholder="Upload Sertifikat">
+                </div>
+                
+                <div class="form-group">
+                    <label for="certLinkDesc">Deskripsi Link Sertifikat</label>
+                    <input type="text" id="certLinkDesc" class="form-control" placeholder="Buat folder dengan nama lengkap Anda dan upload sertifikat">
+                </div>
+                
+                <div class="form-group">
+                    <label for="certLink">Link Sertifikat</label>
+                    <input type="text" id="certLink" class="form-control" placeholder="https://drive.google.com/drive/folders/...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="certBonusTitle">Judul Info Bonus</label>
+                    <input type="text" id="certBonusTitle" class="form-control" placeholder="Informasi Poin Tambahan">
+                </div>
+                
+                <div class="form-group">
+                    <label for="certBonusDesc">Deskripsi Info Bonus</label>
+                    <textarea id="certBonusDesc" class="form-control" placeholder="Upload sertifikat dapat memberikan Anda nilai tambah (poin plus) pada proses seleksi..."></textarea>
+                </div>
+            </div>
+            
+            <!-- WhatsApp Tab Content -->
+            <div class="tab-content" id="whatsappTab">
+                <div class="form-group">
+                    <label for="waTitle">Judul Bagian WhatsApp</label>
+                    <input type="text" id="waTitle" class="form-control" placeholder="Grup Informasi Rana9">
+                </div>
+                
+                <div class="form-group">
+                    <label for="waDesc">Deskripsi Bagian WhatsApp</label>
+                    <textarea id="waDesc" class="form-control" placeholder="Informasi lebih lanjut mengenai tahapan seleksi akan diinformasikan melalui grup WhatsApp berikut:"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="waLinkTitle">Judul Link WhatsApp</label>
+                    <input type="text" id="waLinkTitle" class="form-control" placeholder="Bergabung ke Grup WhatsApp">
+                </div>
+                
+                <div class="form-group">
+                    <label for="waLinkDesc">Deskripsi Link WhatsApp</label>
+                    <input type="text" id="waLinkDesc" class="form-control" placeholder="Klik untuk bergabung dengan grup WhatsApp">
+                </div>
+                
+                <div class="form-group">
+                    <label for="waLink">Link WhatsApp</label>
+                    <input type="text" id="waLink" class="form-control" placeholder="https://chat.whatsapp.com/...">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="footerMessage">Pesan Footer</label>
+                <textarea id="footerMessage" class="form-control" placeholder="Terima kasih atas partisipasi Anda. Kami menantikan kontribusi Anda dalam Rana9!"></textarea>
+            </div>
+        </div>
+        
+        <!-- Maintenance Page -->
+        <div class="admin-content" id="maintenancePage" style="display: none;">
+            <div class="admin-content-header">
+                <h2>Pengaturan Halaman Maintenance</h2>
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="saveMaintenanceBtn">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="maintenanceTitle">Judul Halaman Maintenance</label>
+                <input type="text" id="maintenanceTitle" class="form-control" placeholder="Server Sedang Maintenance">
+            </div>
+            
+            <div class="form-group">
+                <label for="maintenanceDesc">Deskripsi Halaman Maintenance</label>
+                <textarea id="maintenanceDesc" class="form-control" placeholder="Maaf, halaman pendaftaran sedang dalam maintenance. Silakan coba lagi beberapa saat lagi."></textarea>
+            </div>
+        </div>
+        
+        <!-- Footer Page -->
+        <div class="admin-content" id="footerPage" style="display: none;">
+            <div class="admin-content-header">
+                <h2>Pengaturan Footer</h2>
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="saveFooterBtn">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="copyrightText">Teks Hak Cipta</label>
+                <input type="text" id="copyrightText" class="form-control" placeholder="&copy; 2026 Rana9. All rights reserved - Developers Husain Mulyansyah.">
+            </div>
+            
+            <div class="form-group">
+                <label>Link Media Sosial</label>
+                <div class="social-links-form">
+                    <div class="form-group">
+                        <label for="instagramLink">Instagram</label>
+                        <input type="text" id="instagramLink" class="form-control" placeholder="#">
+                    </div>
+                    <div class="form-group">
+                        <label for="twitterLink">Twitter</label>
+                        <input type="text" id="twitterLink" class="form-control" placeholder="#">
+                    </div>
+                    <div class="form-group">
+                        <label for="linkedinLink">LinkedIn</label>
+                        <input type="text" id="linkedinLink" class="form-control" placeholder="#">
+                    </div>
+                    <div class="form-group">
+                        <label for="youtubeLink">YouTube</label>
+                        <input type="text" id="youtubeLink" class="form-control" placeholder="#">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modal for Division -->
+    <div class="modal" id="divisionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="divisionModalTitle">Tambah Divisi</h3>
+                <button class="modal-close" id="closeDivisionModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="divisionForm">
+                    <input type="hidden" id="divisionId">
+                    
+                    <div class="form-group">
+                        <label for="divisionName">Nama Divisi</label>
+                        <input type="text" id="divisionName" class="form-control" placeholder="Nama divisi" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="divisionDescription">Deskripsi Divisi</label>
+                        <textarea id="divisionDescription" class="form-control" placeholder="Deskripsi divisi" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="divisionIcon">Icon (Font Awesome)</label>
+                        <input type="text" id="divisionIcon" class="form-control" placeholder="fa-users" required>
+                    </div>
+                    
+                    <div class="admin-actions" style="justify-content: center; margin-top: 20px;">
+                        <button type="button" class="btn btn-secondary" id="cancelDivisionBtn">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="saveDivisionBtn">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+    
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2yQsDR6J3dzkdTJAZDtA6BKTiKvqqhSI",
+            authDomain: "myapp-c1981.firebaseapp.com",
+            databaseURL: "https://myapp-c1981-default-rtdb.firebaseio.com",
+            projectId: "myapp-c1981",
+            storageBucket: "myapp-c1981.firebasestorage.app",
+            messagingSenderId: "721330953305",
+            appId: "1:721330953305:web:26d329ff6ad1611918a548",
+            measurementId: "G-7BW3KJLJ66"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
+        
+        // DOM Elements
+        const menuToggle = document.getElementById('menuToggle');
+        const adminSidebar = document.getElementById('adminSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const notification = document.getElementById('notification');
+        const mobilePageTitle = document.getElementById('mobilePageTitle');
+        
+        // Admin Profile Elements
+        const adminAvatar = document.getElementById('adminAvatar');
+        const adminName = document.getElementById('adminName');
+        const adminEmail = document.getElementById('adminEmail');
+        const mobileAdminName = document.getElementById('mobileAdminName');
+        
+        // Page Elements
+        const generalPage = document.getElementById('generalPage');
+        const divisionsPage = document.getElementById('divisionsPage');
+        const successPage = document.getElementById('successPage');
+        const maintenancePage = document.getElementById('maintenancePage');
+        const footerPage = document.getElementById('footerPage');
+        
+        // General Page Elements
+        const logoText = document.getElementById('logoText');
+        const recruitmentTitle = document.getElementById('recruitmentTitle');
+        const deadlineText = document.getElementById('deadlineText');
+        const welcomeTitle = document.getElementById('welcomeTitle');
+        const welcomeDesc = document.getElementById('welcomeDesc');
+        const formTitle = document.getElementById('formTitle');
+        const formDesc = document.getElementById('formDesc');
+        const saveGeneralBtn = document.getElementById('saveGeneralBtn');
+        
+        // Divisions Page Elements
+        const divisionList = document.getElementById('divisionList');
+        const addDivisionBtn = document.getElementById('addDivisionBtn');
+        const divisionModal = document.getElementById('divisionModal');
+        const closeDivisionModal = document.getElementById('closeDivisionModal');
+        const divisionModalTitle = document.getElementById('divisionModalTitle');
+        const divisionForm = document.getElementById('divisionForm');
+        const divisionId = document.getElementById('divisionId');
+        const divisionName = document.getElementById('divisionName');
+        const divisionDescription = document.getElementById('divisionDescription');
+        const divisionIcon = document.getElementById('divisionIcon');
+        const saveDivisionBtn = document.getElementById('saveDivisionBtn');
+        const cancelDivisionBtn = document.getElementById('cancelDivisionBtn');
+        
+        // Success Page Elements
+        const successTitle = document.getElementById('successTitle');
+        const successDesc = document.getElementById('successDesc');
+        const successMessage = document.getElementById('successMessage');
+        const certSectionTitle = document.getElementById('certSectionTitle');
+        const certSectionDesc = document.getElementById('certSectionDesc');
+        const certLinkTitle = document.getElementById('certLinkTitle');
+        const certLinkDesc = document.getElementById('certLinkDesc');
+        const certLink = document.getElementById('certLink');
+        const certBonusTitle = document.getElementById('certBonusTitle');
+        const certBonusDesc = document.getElementById('certBonusDesc');
+        const waTitle = document.getElementById('waTitle');
+        const waDesc = document.getElementById('waDesc');
+        const waLinkTitle = document.getElementById('waLinkTitle');
+        const waLinkDesc = document.getElementById('waLinkDesc');
+        const waLink = document.getElementById('waLink');
+        const footerMessage = document.getElementById('footerMessage');
+        const saveSuccessBtn = document.getElementById('saveSuccessBtn');
+        
+        // Maintenance Page Elements
+        const maintenanceTitle = document.getElementById('maintenanceTitle');
+        const maintenanceDesc = document.getElementById('maintenanceDesc');
+        const saveMaintenanceBtn = document.getElementById('saveMaintenanceBtn');
+        
+        // Footer Page Elements
+        const copyrightText = document.getElementById('copyrightText');
+        const instagramLink = document.getElementById('instagramLink');
+        const twitterLink = document.getElementById('twitterLink');
+        const linkedinLink = document.getElementById('linkedinLink');
+        const youtubeLink = document.getElementById('youtubeLink');
+        const saveFooterBtn = document.getElementById('saveFooterBtn');
+        
+        // Global Variables
+        let currentUser = null;
+        let currentUserRole = null;
+        let pageContent = {};
+        let divisions = [];
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            auth.onAuthStateChanged(function(user) {
+                if (!user) {
+                    // Redirect to login page if not logged in
+                    window.location.href = 'login.html';
+                } else {
+                    currentUser = user;
+                    // Load user role
+                    loadUserRole();
+                }
+            });
+            
+            // Menu Toggle
+            menuToggle.addEventListener('click', function() {
+                adminSidebar.classList.toggle('active');
+                sidebarOverlay.classList.toggle('active');
+            });
+            
+            // Sidebar Overlay Click
+            sidebarOverlay.addEventListener('click', function() {
+                adminSidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            });
+            
+            // Logout
+            logoutBtn.addEventListener('click', function() {
+                auth.signOut().then(function() {
+                    showNotification('Anda telah berhasil logout', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1000);
+                }).catch(function(error) {
+                    showNotification('Error: ' + error.message, 'error');
+                });
+            });
+            
+            // Navigation Menu
+            document.querySelectorAll('.admin-menu-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Check if user has permission to access this page
+                    const page = this.getAttribute('data-page');
+                    
+                    // Remove active class from all items
+                    document.querySelectorAll('.admin-menu-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Hide all pages
+                    generalPage.style.display = 'none';
+                    divisionsPage.style.display = 'none';
+                    successPage.style.display = 'none';
+                    maintenancePage.style.display = 'none';
+                    footerPage.style.display = 'none';
+                    
+                    // Show selected page
+                    if (page === 'general') {
+                        generalPage.style.display = 'block';
+                        mobilePageTitle.textContent = 'Pengaturan Umum';
+                    } else if (page === 'divisions') {
+                        divisionsPage.style.display = 'block';
+                        mobilePageTitle.textContent = 'Pengaturan Divisi';
+                        loadDivisions();
+                    } else if (page === 'success') {
+                        successPage.style.display = 'block';
+                        mobilePageTitle.textContent = 'Pengaturan Halaman Sukses';
+                    } else if (page === 'maintenance') {
+                        maintenancePage.style.display = 'block';
+                        mobilePageTitle.textContent = 'Pengaturan Halaman Maintenance';
+                    } else if (page === 'footer') {
+                        footerPage.style.display = 'block';
+                        mobilePageTitle.textContent = 'Pengaturan Footer';
+                    }
+                    
+                    // Close sidebar on mobile
+                    if (window.innerWidth <= 768) {
+                        adminSidebar.classList.remove('active');
+                        sidebarOverlay.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Tab Navigation
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    const parent = this.parentElement;
+                    
+                    // Remove active class from all tabs
+                    parent.querySelectorAll('.tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    
+                    // Remove active class from all tab contents
+                    parent.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Show corresponding tab content
+                    document.getElementById(tabId + 'Tab').classList.add('active');
+                });
+            });
+            
+            // Save General Button
+            saveGeneralBtn.addEventListener('click', function() {
+                saveGeneralSettings();
+            });
+            
+            // Add Division Button
+            addDivisionBtn.addEventListener('click', function() {
+                showDivisionModal();
+            });
+            
+            // Division Form Submit
+            divisionForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveDivision();
+            });
+            
+            // Cancel Division Button
+            cancelDivisionBtn.addEventListener('click', function() {
+                divisionModal.style.display = 'none';
+            });
+            
+            // Close Division Modal
+            closeDivisionModal.addEventListener('click', function() {
+                divisionModal.style.display = 'none';
+            });
+            
+            // Save Success Button
+            saveSuccessBtn.addEventListener('click', function() {
+                saveSuccessSettings();
+            });
+            
+            // Save Maintenance Button
+            saveMaintenanceBtn.addEventListener('click', function() {
+                saveMaintenanceSettings();
+            });
+            
+            // Save Footer Button
+            saveFooterBtn.addEventListener('click', function() {
+                saveFooterSettings();
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === divisionModal) {
+                    divisionModal.style.display = 'none';
+                }
+            });
+        });
+        
+        // Load User Role
+        function loadUserRole() {
+            database.ref('admins').once('value')
+                .then(snapshot => {
+                    const admins = snapshot.val();
+                    if (admins) {
+                        // Find current user role
+                        const currentUserData = Object.keys(admins).find(key => {
+                            return admins[key].email === currentUser.email;
+                        });
+                        
+                        if (currentUserData) {
+                            currentUserRole = admins[currentUserData.key].role;
+                        } else {
+                            // Default to admin if not found
+                            currentUserRole = 'admin';
+                        }
+                        
+                        // Check if user has server role
+                        if (currentUserRole !== 'server') {
+                            // Redirect to admin page if not server
+                            window.location.href = 'admin.html';
+                            return;
+                        }
+                        
+                        // Update admin profile
+                        updateAdminProfile(currentUser);
+                        
+                        // Load page content
+                        loadPageContent();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading admin list:', error);
+                    // Default to redirect if there's an error
+                    window.location.href = 'admin.html';
+                });
+        }
+        
+        // Update Admin Profile
+        function updateAdminProfile(user) {
+            // Get admin info from the list
+            const adminInfo = {
+                name: user.email.split('@')[0],
+                email: user.email
+            };
+            
+            // Update sidebar
+            adminName.textContent = adminInfo.name;
+            adminEmail.textContent = adminInfo.email;
+            
+            // Update mobile header
+            mobileAdminName.textContent = adminInfo.name;
+            
+            // Update avatar with initial
+            const initial = adminInfo.name.charAt(0).toUpperCase();
+            adminAvatar.innerHTML = initial;
+            adminAvatar.style.background = `linear-gradient(135deg, ${getRandomColor()}, ${getRandomColor()})`;
+        }
+        
+        // Get Random Color for Avatar
+        function getRandomColor() {
+            const colors = [
+                '#667eea', '#764ba2', '#f093fb', '#f5576c',
+                '#4facfe', '#00f2fe', '#43e97b', '#38f9d7',
+                '#fa709a', '#fee140', '#30cfd0', '#330867'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Load Page Content
+        function loadPageContent() {
+            database.ref('pageContent').once('value')
+                .then(snapshot => {
+                    const content = snapshot.val();
+                    if (content) {
+                        pageContent = content;
+                        updatePageContent();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading page content:', error);
+                });
+        }
+        
+        // Update Page Content
+        function updatePageContent() {
+            // Update general settings
+            logoText.value = pageContent.logoText || 'Rana9';
+            recruitmentTitle.value = pageContent.recruitmentTitle || 'Open Recruitment 2026';
+            deadlineText.value = pageContent.deadlineText || 'Deadline: 13 Januari 2026';
+            welcomeTitle.value = pageContent.welcomeTitle || 'Selamat Datang di Open Recruitment Rana9 2026';
+            welcomeDesc.value = pageContent.welcomeDesc || 'Bergabunglah bersama kami untuk menciptakan perubahan positif dan kembangkan potensi Anda dalam lingkungan yang dinamis dan mendukung.';
+            formTitle.value = pageContent.formTitle || 'Form Pendaftaran Rana9';
+            formDesc.value = pageContent.formDesc || 'Bergabunglah bersama kami untuk menciptakan perubahan positif!';
+            
+            // Update success settings
+            successTitle.value = pageContent.successTitle || 'Pendaftaran Berhasil!';
+            successDesc.value = pageContent.successDesc || 'Terima kasih telah mendaftar di Open Recruitment Rana9 2026';
+            successMessage.value = pageContent.successMessage || 'Selamat! Pendaftaran Anda telah kami terima. Semoga Anda beruntung dalam proses seleksi ini.';
+            certSectionTitle.value = pageContent.certSectionTitle || 'Upload Sertifikat (Opsional)';
+            certSectionDesc.value = pageContent.certSectionDesc || 'Jika Anda memiliki sertifikat yang relevan, silakan upload melalui link berikut:';
+            certLinkTitle.value = pageContent.certLinkTitle || 'Upload Sertifikat';
+            certLinkDesc.value = pageContent.certLinkDesc || 'Buat folder dengan nama lengkap Anda dan upload sertifikat';
+            certLink.value = pageContent.certificateLink || '';
+            certBonusTitle.value = pageContent.certBonusTitle || 'Informasi Poin Tambahan';
+            certBonusDesc.value = pageContent.certBonusDesc || 'Upload sertifikat dapat memberikan Anda nilai tambah (poin plus) pada proses seleksi, terutama untuk divisi berikut:';
+            waTitle.value = pageContent.waTitle || 'Grup Informasi Rana9';
+            waDesc.value = pageContent.waDesc || 'Informasi lebih lanjut mengenai tahapan seleksi akan diinformasikan melalui grup WhatsApp berikut:';
+            waLinkTitle.value = pageContent.waLinkTitle || 'Bergabung ke Grup WhatsApp';
+            waLinkDesc.value = pageContent.waLinkDesc || 'Klik untuk bergabung dengan grup WhatsApp';
+            waLink.value = pageContent.whatsappLink || '';
+            footerMessage.value = pageContent.footerMessage || 'Terima kasih atas partisipasi Anda. Kami menantikan kontribusi Anda dalam Rana9!';
+            
+            // Update maintenance settings
+            maintenanceTitle.value = pageContent.maintenanceTitle || 'Server Sedang Maintenance';
+            maintenanceDesc.value = pageContent.maintenanceDesc || 'Maaf, halaman pendaftaran sedang dalam maintenance. Silakan coba lagi beberapa saat lagi.';
+            
+            // Update footer settings
+            copyrightText.value = pageContent.copyrightText || '&copy; 2026 Rana9. All rights reserved - Developers Husain Mulyansyah.';
+            
+            if (pageContent.socialLinks) {
+                instagramLink.value = pageContent.socialLinks.instagram || '#';
+                twitterLink.value = pageContent.socialLinks.twitter || '#';
+                linkedinLink.value = pageContent.socialLinks.linkedin || '#';
+                youtubeLink.value = pageContent.socialLinks.youtube || '#';
+            }
+        }
+        
+        // Save General Settings
+        function saveGeneralSettings() {
+            // Update pageContent object
+            pageContent.logoText = logoText.value;
+            pageContent.recruitmentTitle = recruitmentTitle.value;
+            pageContent.deadlineText = deadlineText.value;
+            pageContent.welcomeTitle = welcomeTitle.value;
+            pageContent.welcomeDesc = welcomeDesc.value;
+            pageContent.formTitle = formTitle.value;
+            pageContent.formDesc = formDesc.value;
+            
+            // Save to Firebase
+            database.ref('pageContent').update(pageContent)
+                .then(() => {
+                    showNotification('Pengaturan umum berhasil disimpan', 'success');
+                })
+                .catch(error => {
+                    showNotification('Error saving general settings: ' + error.message, 'error');
+                });
+        }
+        
+        // Load Divisions
+        function loadDivisions() {
+            database.ref('pageContent/divisions').once('value')
+                .then(snapshot => {
+                    const data = snapshot.val();
+                    divisions = data || [];
+                    renderDivisions();
+                })
+                .catch(error => {
+                    console.error('Error loading divisions:', error);
+                });
+        }
+        
+        // Render Divisions
+        function renderDivisions() {
+            divisionList.innerHTML = '';
+            
+            if (divisions.length === 0) {
+                divisionList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Belum ada divisi yang ditambahkan</p>';
+                return;
+            }
+            
+            divisions.forEach((division, index) => {
+                const divisionItem = document.createElement('div');
+                divisionItem.className = 'division-item';
+                divisionItem.innerHTML = `
+                    <div class="division-icon">
+                        <i class="fas ${division.icon}"></i>
+                    </div>
+                    <div class="division-info">
+                        <h4>${division.name}</h4>
+                        <p>${division.description}</p>
+                    </div>
+                    <div class="division-actions">
+                        <button class="btn btn-sm btn-info edit-division" data-index="${index}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-division" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                divisionList.appendChild(divisionItem);
+            });
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-division').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    editDivision(index);
+                });
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-division').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    deleteDivision(index);
+                });
+            });
+        }
+        
+        // Show Division Modal
+        function showDivisionModal(isEdit = false, index = -1) {
+            if (isEdit && index >= 0) {
+                // Edit mode
+                const division = divisions[index];
+                divisionModalTitle.textContent = 'Edit Divisi';
+                divisionId.value = index;
+                divisionName.value = division.name;
+                divisionDescription.value = division.description;
+                divisionIcon.value = division.icon;
+            } else {
+                // Add mode
+                divisionModalTitle.textContent = 'Tambah Divisi';
+                divisionForm.reset();
+                divisionId.value = '';
+            }
+            
+            divisionModal.style.display = 'flex';
+        }
+        
+        // Edit Division
+        function editDivision(index) {
+            showDivisionModal(true, index);
+        }
+        
+        // Save Division
+        function saveDivision() {
+            const id = divisionId.value;
+            const name = divisionName.value.trim();
+            const description = divisionDescription.value.trim();
+            const icon = divisionIcon.value.trim();
+            
+            if (!name || !description || !icon) {
+                showNotification('Semua field harus diisi', 'error');
+                return;
+            }
+            
+            const divisionData = {
+                name: name,
+                description: description,
+                icon: icon
+            };
+            
+            if (id !== '') {
+                // Update existing division
+                divisions[parseInt(id)] = divisionData;
+            } else {
+                // Add new division
+                divisions.push(divisionData);
+            }
+            
+            // Save to Firebase
+            database.ref('pageContent/divisions').set(divisions)
+                .then(() => {
+                    showNotification(`Divisi berhasil ${id !== '' ? 'diperbarui' : 'ditambahkan'}`, 'success');
+                    divisionModal.style.display = 'none';
+                    renderDivisions();
+                })
+                .catch(error => {
+                    showNotification('Error saving division: ' + error.message, 'error');
+                });
+        }
+        
+        // Delete Division
+        function deleteDivision(index) {
+            if (!confirm('Apakah Anda yakin ingin menghapus divisi ini?')) {
+                return;
+            }
+            
+            divisions.splice(index, 1);
+            
+            // Save to Firebase
+            database.ref('pageContent/divisions').set(divisions)
+                .then(() => {
+                    showNotification('Divisi berhasil dihapus', 'success');
+                    renderDivisions();
+                })
+                .catch(error => {
+                    showNotification('Error deleting division: ' + error.message, 'error');
+                });
+        }
+        
+        // Save Success Settings
+        function saveSuccessSettings() {
+            // Update pageContent object
+            pageContent.successTitle = successTitle.value;
+            pageContent.successDesc = successDesc.value;
+            pageContent.successMessage = successMessage.value;
+            pageContent.certSectionTitle = certSectionTitle.value;
+            pageContent.certSectionDesc = certSectionDesc.value;
+            pageContent.certLinkTitle = certLinkTitle.value;
+            pageContent.certLinkDesc = certLinkDesc.value;
+            pageContent.certificateLink = certLink.value;
+            pageContent.certBonusTitle = certBonusTitle.value;
+            pageContent.certBonusDesc = certBonusDesc.value;
+            pageContent.waTitle = waTitle.value;
+            pageContent.waDesc = waDesc.value;
+            pageContent.waLinkTitle = waLinkTitle.value;
+            pageContent.waLinkDesc = waLinkDesc.value;
+            pageContent.whatsappLink = waLink.value;
+            pageContent.footerMessage = footerMessage.value;
+            
+            // Save to Firebase
+            database.ref('pageContent').update(pageContent)
+                .then(() => {
+                    showNotification('Pengaturan halaman sukses berhasil disimpan', 'success');
+                })
+                .catch(error => {
+                    showNotification('Error saving success settings: ' + error.message, 'error');
+                });
+        }
+        
+        // Save Maintenance Settings
+        function saveMaintenanceSettings() {
+            // Update pageContent object
+            pageContent.maintenanceTitle = maintenanceTitle.value;
+            pageContent.maintenanceDesc = maintenanceDesc.value;
+            
+            // Save to Firebase
+            database.ref('pageContent').update(pageContent)
+                .then(() => {
+                    showNotification('Pengaturan halaman maintenance berhasil disimpan', 'success');
+                })
+                .catch(error => {
+                    showNotification('Error saving maintenance settings: ' + error.message, 'error');
+                });
+        }
+        
+        // Save Footer Settings
+        function saveFooterSettings() {
+            // Update pageContent object
+            pageContent.copyrightText = copyrightText.value;
+            pageContent.socialLinks = {
+                instagram: instagramLink.value,
+                twitter: twitterLink.value,
+                linkedin: linkedinLink.value,
+                youtube: youtubeLink.value
+            };
+            
+            // Save to Firebase
+            database.ref('pageContent').update(pageContent)
+                .then(() => {
+                    showNotification('Pengaturan footer berhasil disimpan', 'success');
+                })
+                .catch(error => {
+                    showNotification('Error saving footer settings: ' + error.message, 'error');
+                });
+        }
+        
+        // Show Notification
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.className = 'notification ' + type;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

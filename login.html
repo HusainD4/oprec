@@ -8,6 +8,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
     
     <!-- Font Awesome untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -210,6 +211,43 @@
             font-weight: 400;
         }
         
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            margin-bottom: 25px;
+            background-color: #f5f7fa;
+            border-radius: 10px;
+            padding: 5px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background-color: var(--white);
+            color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
         /* Form Styles */
         .form-group {
             margin-bottom: 22px;
@@ -376,6 +414,10 @@
             font-size: 18px;
         }
         
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+        }
+        
         /* Error & Success Messages */
         .message {
             font-size: 13px;
@@ -503,6 +545,31 @@
             text-decoration: underline;
         }
         
+        /* PIN Input Styles */
+        .pin-inputs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .pin-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .pin-input:focus {
+            border-color: var(--primary-color);
+            background-color: var(--white);
+            box-shadow: 0 0 0 4px rgba(106, 17, 203, 0.1);
+        }
+        
         /* Responsive Design */
         @media (max-width: 480px) {
             .login-wrapper {
@@ -527,6 +594,12 @@
                 right: 10px;
                 left: 10px;
                 max-width: none;
+            }
+            
+            .pin-input {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
             }
         }
         
@@ -567,43 +640,107 @@
                 <p>Silakan masuk ke dashboard admin Rana9</p>
             </div>
             
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <div class="input-wrapper">
-                        <input type="email" id="email" class="form-control" placeholder="admin@rana9.com" required>
-                        <i class="fas fa-envelope input-icon"></i>
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="login">Login</button>
+                <button class="tab-btn" data-tab="master">Master Admin</button>
+            </div>
+            
+            <!-- Login Tab Content -->
+            <div class="tab-content active" id="loginTab">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" class="form-control" placeholder="admin@rana9.com" required>
+                            <i class="fas fa-envelope input-icon"></i>
+                        </div>
+                        <div class="error-message" id="emailError"></div>
                     </div>
-                    <div class="error-message" id="emailError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="password" class="form-control" placeholder="Masukkan password Anda" required>
-                        <i class="fas fa-lock input-icon"></i>
-                        <button type="button" class="password-toggle" id="passwordToggle">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" class="form-control" placeholder="Masukkan password Anda" required>
+                            <i class="fas fa-lock input-icon"></i>
+                            <button type="button" class="password-toggle" id="passwordToggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="error-message" id="passwordError"></div>
                     </div>
-                    <div class="error-message" id="passwordError"></div>
-                </div>
-                
-                <div class="form-options">
-                    <div class="remember-me">
-                        <input type="checkbox" id="rememberMe">
-                        <label for="rememberMe">Ingat saya</label>
+                    
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <label for="rememberMe">Ingat saya</label>
+                        </div>
+                        <a href="#" class="forgot-password" id="forgotPassword">Lupa password?</a>
                     </div>
-                    <a href="#" class="forgot-password" id="forgotPassword">Lupa password?</a>
-                </div>
-                
-                <button type="submit" class="btn" id="loginBtn">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span id="loginBtnText">Masuk</span>
-                </button>
-                
-                <div class="success-message" id="successMessage"></div>
-            </form>
+                    
+                    <button type="submit" class="btn" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span id="loginBtnText">Masuk</span>
+                    </button>
+                    
+                    <div class="success-message" id="successMessage"></div>
+                </form>
+            </div>
+            
+            <!-- Master Admin Tab Content -->
+            <div class="tab-content" id="masterTab">
+                <form id="masterForm">
+                    <div class="form-group">
+                        <label for="masterEmail">Email Address</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="masterEmail" class="form-control" placeholder="master@rana9.com" required>
+                            <i class="fas fa-envelope input-icon"></i>
+                        </div>
+                        <div class="error-message" id="masterEmailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="masterName">Nama Lengkap</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="masterName" class="form-control" placeholder="Nama lengkap" required>
+                            <i class="fas fa-user input-icon"></i>
+                        </div>
+                        <div class="error-message" id="masterNameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="masterPassword">Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="masterPassword" class="form-control" placeholder="Minimal 6 karakter" required>
+                            <i class="fas fa-lock input-icon"></i>
+                            <button type="button" class="password-toggle" id="masterPasswordToggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="error-message" id="masterPasswordError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Masukkan PIN Master Admin (6 digit)</label>
+                        <div class="pin-inputs">
+                            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" required>
+                            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" required>
+                            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" required>
+                            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" required>
+                            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" required>
+                            <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" required>
+                        </div>
+                        <div class="error-message" id="pinError"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn" id="masterBtn">
+                        <i class="fas fa-user-plus"></i>
+                        <span id="masterBtnText">Buat Master Admin</span>
+                    </button>
+                    
+                    <div class="success-message" id="masterSuccessMessage"></div>
+                </form>
+            </div>
             
             <div class="back-link">
                 <a href="index.html">
@@ -635,8 +772,13 @@
         
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const database = firebase.database();
         
         // DOM Elements
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Login Form Elements
         const loginForm = document.getElementById('loginForm');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
@@ -645,12 +787,61 @@
         const forgotPasswordLink = document.getElementById('forgotPassword');
         const loginBtn = document.getElementById('loginBtn');
         const loginBtnText = document.getElementById('loginBtnText');
-        const notification = document.getElementById('notification');
+        const successMessage = document.getElementById('successMessage');
+        
+        // Master Form Elements
+        const masterForm = document.getElementById('masterForm');
+        const masterEmailInput = document.getElementById('masterEmail');
+        const masterNameInput = document.getElementById('masterName');
+        const masterPasswordInput = document.getElementById('masterPassword');
+        const masterPasswordToggle = document.getElementById('masterPasswordToggle');
+        const masterBtn = document.getElementById('masterBtn');
+        const masterBtnText = document.getElementById('masterBtnText');
+        const masterSuccessMessage = document.getElementById('masterSuccessMessage');
+        const pinInputs = document.querySelectorAll('.pin-input');
         
         // Error messages
         const emailError = document.getElementById('emailError');
         const passwordError = document.getElementById('passwordError');
-        const successMessage = document.getElementById('successMessage');
+        const masterEmailError = document.getElementById('masterEmailError');
+        const masterNameError = document.getElementById('masterNameError');
+        const masterPasswordError = document.getElementById('masterPasswordError');
+        const pinError = document.getElementById('pinError');
+        
+        // Notification
+        const notification = document.getElementById('notification');
+        
+        // Master Admin PIN
+        const MASTER_PIN = "281005";
+        
+        // Check if master admin already exists
+        function checkMasterAdminExists() {
+            database.ref('admins').orderByChild('role').equalTo('super admin').limitToFirst(1).once('value')
+                .then(snapshot => {
+                    if (snapshot.exists()) {
+                        // Master admin already exists, hide master tab
+                        document.querySelector('[data-tab="master"]').style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking master admin:', error);
+                });
+        }
+        
+        // Tab Navigation
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Remove active class from all tabs and buttons
+                tabBtns.forEach(tab => tab.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                this.classList.add('active');
+                document.getElementById(tabId + 'Tab').classList.add('active');
+            });
+        });
         
         // Check if user is already logged in
         auth.onAuthStateChanged(function(user) {
@@ -660,10 +851,30 @@
             }
         });
         
-        // Toggle password visibility
+        // Toggle password visibility for login form
         passwordToggle.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
+            
+            // Toggle icon with animation
+            const icon = this.querySelector('i');
+            icon.style.transform = 'scale(0)';
+            setTimeout(() => {
+                if (type === 'password') {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+                icon.style.transform = 'scale(1)';
+            }, 200);
+        });
+        
+        // Toggle password visibility for master form
+        masterPasswordToggle.addEventListener('click', function() {
+            const type = masterPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            masterPasswordInput.setAttribute('type', type);
             
             // Toggle icon with animation
             const icon = this.querySelector('i');
@@ -718,7 +929,7 @@
                 });
         });
         
-        // Handle form submission
+        // Handle login form submission
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -763,23 +974,41 @@
             // Sign in with Firebase
             auth.signInWithEmailAndPassword(email, password)
                 .then(userCredential => {
-                    // Check if user is admin (you might want to add additional checks here)
+                    // Check if user is admin
                     const user = userCredential.user;
                     
-                    // Remember me functionality
-                    const persistence = rememberMeCheckbox.checked ? 
-                        firebase.auth.Auth.Persistence.LOCAL : 
-                        firebase.auth.Auth.Persistence.SESSION;
-                    
-                    auth.setPersistence(persistence)
-                        .then(() => {
-                            // Show success message
-                            showNotification('Login berhasil! Mengarahkan ke dashboard...', 'success');
-                            
-                            // Redirect to admin page after a short delay
-                            setTimeout(() => {
-                                window.location.href = 'admin.html';
-                            }, 1000);
+                    // Check if user exists in admin database
+                    database.ref('admins').child(user.uid).once('value')
+                        .then(snapshot => {
+                            if (snapshot.exists()) {
+                                // User is admin, proceed
+                                const adminData = snapshot.val();
+                                
+                                // Remember me functionality
+                                const persistence = rememberMeCheckbox.checked ? 
+                                    firebase.auth.Auth.Persistence.LOCAL : 
+                                    firebase.auth.Auth.Persistence.SESSION;
+                                
+                                auth.setPersistence(persistence)
+                                    .then(() => {
+                                        // Show success message
+                                        showNotification('Login berhasil! Mengarahkan ke dashboard...', 'success');
+                                        
+                                        // Redirect to admin page after a short delay
+                                        setTimeout(() => {
+                                            window.location.href = 'admin.html';
+                                        }, 1000);
+                                    })
+                                    .catch(error => {
+                                        showNotification('Error: ' + error.message, 'error');
+                                        resetButtonState();
+                                    });
+                            } else {
+                                // User is not admin
+                                auth.signOut();
+                                showNotification('Anda tidak memiliki akses admin', 'error');
+                                resetButtonState();
+                            }
                         })
                         .catch(error => {
                             showNotification('Error: ' + error.message, 'error');
@@ -816,6 +1045,171 @@
                 });
         });
         
+        // Handle master form submission
+        masterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            hideError('masterEmail');
+            hideError('masterName');
+            hideError('masterPassword');
+            hideError('pin');
+            masterSuccessMessage.style.display = 'none';
+            
+            // Get form values
+            const email = masterEmailInput.value.trim();
+            const name = masterNameInput.value.trim();
+            const password = masterPasswordInput.value;
+            
+            // Get PIN from inputs
+            let pin = '';
+            pinInputs.forEach(input => {
+                pin += input.value;
+            });
+            
+            // Validate form
+            let isValid = true;
+            
+            if (email === '') {
+                showError('masterEmail', 'Email wajib diisi');
+                shakeElement(masterEmailInput);
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                showError('masterEmail', 'Format email tidak valid');
+                shakeElement(masterEmailInput);
+                isValid = false;
+            }
+            
+            if (name === '') {
+                showError('masterName', 'Nama wajib diisi');
+                shakeElement(masterNameInput);
+                isValid = false;
+            }
+            
+            if (password === '') {
+                showError('masterPassword', 'Password wajib diisi');
+                shakeElement(masterPasswordInput);
+                isValid = false;
+            } else if (password.length < 6) {
+                showError('masterPassword', 'Password minimal 6 karakter');
+                shakeElement(masterPasswordInput);
+                isValid = false;
+            }
+            
+            if (pin !== MASTER_PIN) {
+                showError('pin', 'PIN master admin salah');
+                shakeElement(pinInputs[0]);
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Show loading state
+            masterBtn.disabled = true;
+            masterBtnText.innerHTML = '<span class="spinner"></span> Membuat...';
+            
+            // Create user in Firebase Auth
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(userCredential => {
+                    const user = userCredential.user;
+                    
+                    // Add user to admin database
+                    database.ref('admins').child(user.uid).set({
+                        email: email,
+                        name: name,
+                        role: 'super admin',
+                        createdAt: new Date().toISOString()
+                    })
+                    .then(() => {
+                        // Show success message
+                        masterSuccessMessage.textContent = 'Master admin berhasil dibuat! Silakan login dengan akun yang baru dibuat.';
+                        masterSuccessMessage.style.display = 'block';
+                        
+                        // Reset form
+                        masterForm.reset();
+                        pinInputs.forEach(input => input.value = '');
+                        
+                        // Switch to login tab
+                        document.querySelector('[data-tab="login"]').click();
+                        
+                        showNotification('Master admin berhasil dibuat!', 'success');
+                    })
+                    .catch(error => {
+                        showNotification('Error: ' + error.message, 'error');
+                    })
+                    .finally(() => {
+                        masterBtn.disabled = false;
+                        masterBtnText.innerHTML = '<i class="fas fa-user-plus"></i> Buat Master Admin';
+                    });
+                })
+                .catch(error => {
+                    // Handle errors
+                    let errorMessage = 'Pembuatan akun gagal. Silakan coba lagi.';
+                    
+                    switch (error.code) {
+                        case 'auth/email-already-in-use':
+                            errorMessage = 'Email sudah digunakan. Gunakan email lain.';
+                            break;
+                        case 'auth/invalid-email':
+                            errorMessage = 'Format email tidak valid';
+                            break;
+                        case 'auth/weak-password':
+                            errorMessage = 'Password terlalu lemah. Gunakan password yang lebih kuat.';
+                            break;
+                        default:
+                            errorMessage = 'Error: ' + error.message;
+                    }
+                    
+                    showNotification(errorMessage, 'error');
+                    shakeElement(masterBtn);
+                    masterBtn.disabled = false;
+                    masterBtnText.innerHTML = '<i class="fas fa-user-plus"></i> Buat Master Admin';
+                });
+        });
+        
+        // PIN input handling
+        pinInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                // Only allow numbers
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Move to next input if current input is filled
+                if (this.value.length === 1 && index < pinInputs.length - 1) {
+                    pinInputs[index + 1].focus();
+                }
+                
+                // Clear error when user starts typing
+                if (pinError.style.display === 'block') {
+                    hideError('pin');
+                }
+            });
+            
+            // Handle backspace
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                    pinInputs[index - 1].focus();
+                }
+            });
+            
+            // Handle paste
+            input.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text').trim();
+                
+                // Only allow numbers and limit to 6 digits
+                const numericData = pastedData.replace(/[^0-9]/g, '').substring(0, 6);
+                
+                // Fill the inputs with pasted data
+                for (let i = 0; i < numericData.length && i < pinInputs.length; i++) {
+                    pinInputs[i].value = numericData[i];
+                }
+                
+                // Focus on the next empty input or the last input
+                const nextEmptyIndex = Math.min(numericData.length, pinInputs.length - 1);
+                pinInputs[nextEmptyIndex].focus();
+            });
+        });
+        
         // Validate email format
         function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -824,14 +1218,58 @@
         
         // Show error message
         function showError(field, message) {
-            const errorElement = field === 'email' ? emailError : passwordError;
+            let errorElement;
+            
+            switch (field) {
+                case 'email':
+                    errorElement = emailError;
+                    break;
+                case 'password':
+                    errorElement = passwordError;
+                    break;
+                case 'masterEmail':
+                    errorElement = masterEmailError;
+                    break;
+                case 'masterName':
+                    errorElement = masterNameError;
+                    break;
+                case 'masterPassword':
+                    errorElement = masterPasswordError;
+                    break;
+                case 'pin':
+                    errorElement = pinError;
+                    break;
+            }
+            
             errorElement.textContent = message;
             errorElement.style.display = 'block';
         }
         
         // Hide error message
         function hideError(field) {
-            const errorElement = field === 'email' ? emailError : passwordError;
+            let errorElement;
+            
+            switch (field) {
+                case 'email':
+                    errorElement = emailError;
+                    break;
+                case 'password':
+                    errorElement = passwordError;
+                    break;
+                case 'masterEmail':
+                    errorElement = masterEmailError;
+                    break;
+                case 'masterName':
+                    errorElement = masterNameError;
+                    break;
+                case 'masterPassword':
+                    errorElement = masterPasswordError;
+                    break;
+                case 'pin':
+                    errorElement = pinError;
+                    break;
+            }
+            
             errorElement.style.display = 'none';
         }
         
@@ -854,6 +1292,11 @@
         
         // Shake element animation
         function shakeElement(element) {
+            if (element.length) {
+                // If it's a collection (like pinInputs), shake the first one
+                element = element[0];
+            }
+            
             element.style.animation = 'shake 0.5s';
             setTimeout(() => {
                 element.style.animation = '';
@@ -882,10 +1325,29 @@
             successMessage.style.display = 'none';
         });
         
-        // Add enter key support for form
+        masterEmailInput.addEventListener('input', function() {
+            hideError('masterEmail');
+            masterSuccessMessage.style.display = 'none';
+        });
+        
+        masterNameInput.addEventListener('input', function() {
+            hideError('masterName');
+            masterSuccessMessage.style.display = 'none';
+        });
+        
+        masterPasswordInput.addEventListener('input', function() {
+            hideError('masterPassword');
+            masterSuccessMessage.style.display = 'none';
+        });
+        
+        // Add enter key support for forms
         document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !loginBtn.disabled) {
-                loginForm.dispatchEvent(new Event('submit'));
+            if (e.key === 'Enter') {
+                if (document.getElementById('loginTab').classList.contains('active') && !loginBtn.disabled) {
+                    loginForm.dispatchEvent(new Event('submit'));
+                } else if (document.getElementById('masterTab').classList.contains('active') && !masterBtn.disabled) {
+                    masterForm.dispatchEvent(new Event('submit'));
+                }
             }
         });
         
@@ -904,6 +1366,12 @@
             input.addEventListener('blur', function() {
                 this.parentElement.style.transform = 'scale(1)';
             });
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if master admin already exists
+            checkMasterAdminExists();
         });
     </script>
 </body>
